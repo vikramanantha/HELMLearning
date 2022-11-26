@@ -24,11 +24,11 @@ import pandas as pd
 
 # set up database configuration (set the db-username, db-password and db-name for your database)
 config = {
-    'user': 'helmlearning',
-    'password': ':RYP9Y,37:mDm',
-    'host': 'helmlearningdatabase-1.cnoqlueuri3g.us-east-1.rds.amazonaws.com', #52.21.172.100:22
-    'port': '3306',
-    'database': 'HELM_Database'
+    'user': '[SECRET]',
+    'password': '[SECRET]',
+    'host': '[SECRET]', #52.21.172.100
+    'port': '[SECRET]',
+    'database': '[SECRET]'
 }
 
 
