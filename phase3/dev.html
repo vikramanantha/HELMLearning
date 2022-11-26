@@ -1,0 +1,300 @@
+<!-- Vikram Anantha
+Aug 18 2021
+Remaking the Home Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+
+        <title>HELM Learning</title>
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotopage('helmlearning.com')" class="p3topbutton active">Home</button>
+            <button onclick="gotofile('our-team.html')" class="p3topbutton">Our Team</button>
+            <button onclick="gotofile('our-classes.html')" class="p3topbutton">Our Classes</button>
+            <a id='center-top-image-link' href="www.helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v2.png'></a>
+            <button onclick="gotofile('donations.html')" class="p3topbutton">Donations</button>
+            <button onclick="gotofile('contact-us.html')" class="p3topbutton">Contact Us</button>
+            <button onclick="gotofile('testimonials.html')" class="p3topbutton">Testimonials</button>
+            
+        </div>
+        <!-- <div id="outer-welcome"> -->
+        <div id="welcome">
+          <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2.png' style="width:min(400px,80%);">
+          <h1 id="section_headers" style="color:#fff; font-size: 70px;margin-top:40px;">Helping Everyone Learn More</h1>
+          <p style="color:#fff; text-align: center; font-size:17px;">Offering free online education to students without it</p>
+        </div>
+        <!-- </div> -->
+
+        <div id="num-students">
+          <div class='blingbling1'><h1 id="numstudents" style="color:#fff;font-size:max(50px,3.5vw);">Hmmmmm...</h1></div>
+          <div class='blingbling2'><button class='p3button' onclick="gotosuspage('signup.helmlearning.com')">Take me there!</button></div>
+        </div>
+
+        <div id="upcomingclasses">
+          <h1 id='tobedeleted'>Thinking...</h1>
+        </div>
+
+        <div id="partners" class="homepage">
+          <h1>Our Partners</h1>
+          <div class="homepage-row">
+            <div class="homepage-card threefer">
+              <h2 class="homepageh2">IAL</h2>
+              <img style="max-width: 400px; width:80%;" src='https://images.squarespace-cdn.com/content/v1/5a91ac14a2772c57c1e8b7a8/1519496423431-7BOYWQM7RBGXKHD3QHCB/image.jpeg'>
+              <p class="homepagep">
+                Indian Americans of Lexington (IAL) is a volunteer civic organization with its mission to celebrate and share the diverse Indian culture, heritage and values to benefit the community.<br>
+                <br>
+                IAL aims to foster participation and engagement of its members in various social, multi-cultural, educational, town/civic and charitable activities through collaborative events.<br>
+                Visit them at <a href='https://www.indianamericansoflexington.org/'>indianamericansoflexington.org</a> to learn more.
+              </p>
+            </div>
+            <div class="homepage-card threefer">
+              <h2 class="homepageh2">CAAL</h2>
+              <img style="max-width: 400px; width:80%;" src='https://helm-logos.s3.amazonaws.com/caal.jpeg'>
+              <p class="homepagep">
+                Chinese American Association of Lexington (CAAL)'s mission is to serve Chinese-American's interests in important town-wide activities, especially but not limited to public school education, local politics, and cultural issues.<br>
+                <br>
+                CAAL also provides opportunities for Chinese American community to engage with the Lexington community through volunteerism, networking, and social events.<br>
+                <br>
+                Visit them at <a href='http://caal-ma.org/'>caal-ma.org</a> to learn more.
+              </p>
+            </div>
+            <div class="homepage-card threefer">
+              <h2 class="homepageh2">ReachMathematics</h2>
+              <img style="max-width: 400px; width:80%;" src='https://helm-logos.s3.amazonaws.com/reachmath.png'>
+              <p class="homepagep">Tutoring Math to Younger Students<br>
+                <br>
+                Reach Mathematics is an organization with a group of high schoolers who want to help younger students to advance in their math education. Even under COVID-19 situations, RM wants to be able to provide learning opportunities for all students virtually. Reach Mathematics teaches Mathematics to elementary, middle, and even high school students for free!<br>
+                <br>
+                Reach them on <a href='instagram.com/reachmathematics'>Instagram</a>, <a href='mailto:reachmathematics@gmail.com'>Email</a>, or <a href='https://reachmathematics.wixsite.com/learning'>reachmathematics.wixsite.com/learning</a> learn more.
+            </div>
+          </div>
+        </div>
+
+        <div id="ourmission" class="homepage">
+          <h1>What We Do!</h1>
+          <div class="homepage-row">
+            <div class="homepage-card oneferone">
+              <h2 class="homepageh2">Free Online Classes</h2>
+              <p class="homepagep">Given the COVID-19 Pandemic, 54 million students across the U.S. are now home from school. To help with this, we are offering completely free, online class in numerous different subjects. Classes are free an open to anyone of all ages, interests and experience levels. All that is needed is a computer and access to the internet</p>
+            </div>
+            <div class="homepage-card onefertwo">
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/stock/1314/'>
+            </div>
+          </div>
+        </div>
+
+        <div id="joinus" class="homepage">
+          <h1>Join Us!</h1>
+          <div  class="homepage-row">
+            <div class="homepage-card twofer">
+              <h2 class="homepageh2">Join us as a Teacher!</h2>
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/stock/gO228K/'>
+              <p class="homepagep">We need driven teachers that are passionate about subjects that they want to share with others. Join us and teach your own week-long class for volunteer hours!</p>
+              <button onclick="gotosuspage('teachers.helmlearning.com/signup')" class="p3buttonsmol" style="background-color: #5434ab;color:#fff;max-width: 350px;">Join us as a teacher!</button>
+            </div>
+            <div class="homepage-card twofer">
+              <h2 class="homepageh2">Join us as a Student!</h2>
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/stock/85879/'>
+              <p class="homepagep">Interested in a class you want to take? Join us as a student! For more information on our class offerings and our teachers, please click below!</p>
+              <button onclick="gotofile('our-classes.html')" class="p3buttonsmol" style="background-color: #5434ab;color:#fff;max-width: 350px;">Join us as a Student!</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="aboutus" class="homepage">
+          <h1>About Us!</h1>
+          <div class="homepage-row">
+            <div class="homepage-card threefer">
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/ip/23a414a5-5c20-4369-949d-2cc1e8321540/icon-04.jpg'>
+              <h2 class="homepageh2">Our Team</h2>
+              <p class="homepagep">HELM was started by two brothers, Sidharth and Vikram Anantha, to help students get an education despite schools being closed due to the COVID-19 Pandemic</p>
+            </div>
+            <div class="homepage-card threefer">
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/ip/23a414a5-5c20-4369-949d-2cc1e8321540/icon-0006.jpg'>
+              <h2 class="homepageh2">Our History</h2>
+              <p class="homepagep">HELM officially started teaching classes on April 6th, 2020. We first started teaching classes in Python, and on April 13th, 2020, we added classes in Arduino. Now, we are expanding to teach classes in numerous subjects, across multiple fields</p>
+            </div>
+            <div class="homepage-card threefer">
+              <img style="max-width: 400px; width:80%;" src='https://img1.wsimg.com/isteam/ip/23a414a5-5c20-4369-949d-2cc1e8321540/icon-05.jpg'>
+              <h2 class="homepageh2">Our Mission</h2>
+              <p class="homepagep">During the COVID-19 Pandemic, 54 million students across the U.S. are out of school, and many are without online learning. Being students ourselves, we want to give students an education in topics that we are passionate about, so that children across America can learn during the pandemic</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2021 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+
+
+      </body>
+      <script>
+          document.getElementById("numstudents").innerHTML = "This is so weeiirrdddd"
+          var imagesize = 250;
+          var numcols = 3;
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/upcomingclasses';
+            const request = new XMLHttpRequest();
+            
+            request.open('GET', url_a)
+            //var taking = new XMLHttpRequest();
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                console.log(data)
+                document.getElementById("upcomingclasses").removeChild(document.getElementById("tobedeleted"))
+                var subjects = ["Weeklong Classes", "5 Week Classes"]
+                for (i = 0; i < subjects.length; i++) {
+                    // DIV //
+                    if (data[subjects[i]].length == 0) continue;
+                    var sectiondiv = document.createElement("DIV")
+                    
+                    document.getElementById("upcomingclasses").appendChild(sectiondiv)
+                    sectiondiv.style.paddingTop = "30px";
+                    sectiondiv.style.paddingBottom = "30px";
+                        // HEAD TEXT //
+                        var sectionheader = document.createElement("H1")
+                        sectionheader.innerHTML = subjects[i] + " Starting Soon!";
+                        sectiondiv.id = subjects[i].toLowerCase()
+                        sectiondiv.appendChild(sectionheader)
+                        // CLASS //
+                        var classes = data[subjects[i]];
+                        console.log(subjects[i])
+                        for (var j = 0; j < classes.length; j++) {
+                            if (j % numcols == 0) {
+                                var classrow = document.createElement("div")
+                                classrow.id = "classrow_" + (j/numcols) + "_" + i
+                                // console.log("classrow_" + (j/numcols)) + "_" + i
+                                classrow.setAttribute('class', "teacherrow")
+                                // classrow.setAttribute('class', "row")
+                                sectiondiv.appendChild(classrow)
+                            }
+                            var classcard = document.createElement("div")
+                            // teachercard.setAttribute("class", "col-sm-1")
+                            classcard.setAttribute("class", "teachercard")
+                            
+                            var imagediv = document.createElement("div");
+                            // imagediv.style.maxWidth = imagesize + "px";
+                            // imagediv.style.float = "left";
+                            // imagediv.style.paddingLeft = "20px";
+                            // imagediv.style.paddingRight = "20px";
+                            // imagediv.style.paddingTop = "20px";
+                            imagediv.setAttribute('class', 'imagediv')
+                            // imagediv.style.borderRadius = "40%";
+                            // imagediv.style.marginLeft = "0px";
+                            var teacher_image = new Image("100%", "100%"); // width, height
+                            teacher_image.src = classes[j]['Icon'];
+                            teacher_image.classList.add('circle')
+                            imagediv.appendChild(teacher_image)
+                            classcard.appendChild(imagediv)
+
+                            // CLASS TITLE //
+                            var classinfo = document.createElement("H2")
+                            classinfo.setAttribute("class", "teachername")
+                            classinfo.innerHTML = classes[j]['Name'];
+                            classcard.appendChild(classinfo)
+
+                            // CLASS TEACHER //
+                            var classinfo = document.createElement("P")
+                            classinfo.setAttribute("class", "teacherinfo")
+                            classinfo.innerHTML = "Taught by " + classes[j]['Teacher'] + "<br>" + classes[j]['Dates'];
+                            classcard.appendChild(classinfo)
+
+                            // // DATES //
+                            // var classinfo = document.createElement("P")
+                            // classinfo.setAttribute("class", "teacherinfo")
+                            // classinfo.innerHTML = classes[j]['Dates'];
+                            // classcard.appendChild(classinfo)
+
+                            // CLASS BUTTON //
+                            var classinfo2 = document.createElement("A")
+                            classinfo2.href = "http://signup.helmlearning.com?" + classes[j]["Signup Link"]
+                            classinfo2.setAttribute("target", "_blank")
+                            
+
+                            var classinfo = document.createElement("BUTTON")
+                            classinfo.setAttribute("class", "signupbutton")
+                            classinfo.innerHTML = "Find more details and sign up here!";
+                            // classinfo.setAttribute("onclick", "gotosuspage(" + classes[j]["Signup Link"] + ")")
+                            classinfo2.appendChild(classinfo)
+                            classcard.appendChild(classinfo2)
+                            // ADD THAT TO THE CLASS
+
+                            // ADD THAT TO THE DIV
+                            // console.log("classrow_" + parseInt(j/numcols))
+                            document.getElementById("classrow_" + parseInt(j/numcols) + "_" + i).appendChild(classcard)
+                        }
+                            
+                            
+                            
+                            
+                        
+                    // ADD THAT TO THE BIG DIV
+                    
+                        
+                }
+
+              }
+            request.send()
+
+            const url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/get_num_students';
+            const request2 = new XMLHttpRequest();
+            
+            request2.open('GET', url_b)
+            //var taking = new XMLHttpRequest();
+            request2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request2.onload = function () {
+                var data = JSON.parse(this.response);
+                console.log(data)
+                document.getElementById("numstudents").innerHTML = "Over " + data["Number of Students"] + " Students! Help us get to 5K!"
+            }
+            request2.send()
+          
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+
+          function gotopage(website) {
+            window.location.href = "www." + website
+          }
+          function gotofile(website) {
+            window.location.href = website
+          }
+          function gotosuspage(website) {
+            window.location.href = "http://" + website
+          }
+          function showNavBarStaff() {
+            var x = document.getElementById("p3top");
+            if (x.className === "topnav") {
+              x.className += " responsive";
+            } else {
+              x.className = "topnav";
+            }
+          }
+      </script>
+
+
+
+</html>

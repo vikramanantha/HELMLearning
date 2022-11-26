@@ -1,0 +1,116 @@
+<!-- Vikram Anantha
+Aug 21 2021
+Remaking the Donations Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    
+        <title>Donations - HELM Learning</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotofile('/')" class="p3topbutton">Home</button>
+            <button onclick="gotofile('our-team.html')" class="p3topbutton">Our Team</button>
+            <button onclick="gotofile('our-classes.html')" class="p3topbutton">Our Classes</button>
+            <a id='center-top-image-link' href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v2.png'></a>
+            <button onclick="gotopage('helmlearning.com/donations.html')" class="p3topbutton active">Donations</button>
+            <button onclick="gotofile('contact-us.html')" class="p3topbutton">Contact Us</button>
+            <button onclick="gotofile('testimonials.html')" class="p3topbutton">Testimonials</button>
+            
+        </div>
+        <!-- <div id="outer-welcome"> -->
+        <div id="header">
+            <h1 id="section_headers" style="color:#fff">Support HELM</h1>
+        </div>
+        <!-- </div> -->
+
+        <!-- <div id="justclickitplease">
+          <div class='blingbling1'><h1 id="numstudents" style="color:#fff;font-size:max(20px,3.5vw);">Donate to HELM Now!</h1></div>
+          <div class='blingbling2'><button class='p3button' onclick="gotosuspage('signup.helmlearning.com')">Donate Here!</button></div>
+        </div> -->
+
+        <div id="justclickitplease" style="border-bottom: #000 3px solid;">
+            <h1 id="header1" style="font-size:max(20px,3.5vw);">Donate any amount of money to support HELM and ensure it remains a free platform</h1></div>
+        </div>  
+
+        <div id="upcomingclasses" class="homepage">
+          <h1 id='header2' style="color:#5434ab">Donate over $25 and receive a free t-shirt!</h1>
+        </div>
+
+        <div id="plsdonate" class="homepage">
+          <!-- <h1>What We Do!</h1> -->
+          <div class="homepage-row">
+            <div class="homepage-card oneferone">
+              <h2 class="homepageh2" style="font-size:30px">If you donate over $25 USD, then we will send you a free HELM Learning brand t-shirt!</h2>
+              <!-- <p class="homepagep">HELM has a bunch of volunteer teachers blah blah blah please just donate to us</p> -->
+            </div>
+            <div class="homepage-card onefertwo">
+              <img style="max-width: 400px; width:80%;padding-top:30px" src='https://img1.wsimg.com/isteam/ip/64d2ea0f-6a62-404f-9c3f-34e1d6085cd7/Screen%20Shot%202020-06-12%20at%2010.11.07%20AM.png'>
+            </div>
+          </div>
+        </div>
+
+        <div id="upcomingclasses" class="homepage">
+            <h1 id='header3' style="color:#5434ab">Donate now and support us!</h1>
+        </div>
+        <div class="homepage" style="width:100px">
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+          <input type="hidden" name="cmd" value="_s-xclick" />
+          <input type="hidden" name="hosted_button_id" value="WR3LLTKKPW4HQ" />
+          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+          <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+      </div>
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2022 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+
+
+      </body>
+      
+      <script>
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+
+          function gotopage(website) {
+            window.location.href = "https://" + website
+          }
+          function gotofile(website) {
+            window.location.href = website
+          }
+          function gotosuspage(website) {
+            window.location.href = "http://" + website
+          }
+          function showNavBarStaff() {
+            var x = document.getElementById("p3top");
+            if (x.className === "topnav") {
+              x.className += " responsive";
+            } else {
+              x.className = "topnav";
+            }
+          }
+      </script>
+
+
+</html>

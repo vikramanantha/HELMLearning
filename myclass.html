@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Teacher's Dashboard | My Class</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="icon_smol.png"/>
+  </head>
+
+  <body>
+      <div id='head'>
+        <a href="https://helmlearning.com">
+            <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png', width=325px>
+        </a>
+        <div id='header_text'>
+            <h1 id='header_signup'>Loading...</h1>
+        </div>
+      </div>
+    <div id="root">
+        <div id="new_sys" class="peasant" style="background-color: #b5ffb0; margin-bottom: 10px;">
+            <h2>Welcome to the New Teachers page!</h2>
+            <h3 style="color: black; font-size: 14px;">This page is essentially a way to see when your next class is, who your students are (current / all), etc. You can send reminder emails to students, and change any info about your class. To change any details, email us at <a href="mailto:helmlearning2020@gmail.com">helmelearning2020@gmail.com</a>. To send a mass email, copy all student emails using the "Copy Emails" Button below, and to Send out a reminder email, click the "Send Reminder Email" Button below.</h3>
+        </div>
+        <div id="info" class="peasant info_page_4">
+            <p id='welcome' class='welcome'></p>
+            <p id='info_name'></p>
+            <p id='info_description'></p>
+            <p id='info_time'></p>
+            <p id='info_week'></p>
+            <p id='info_age'></p>
+            <p id='info_zoom'></p>
+            <p id='info_sharingmats'></p>
+            <p id='info_classrec'></p>
+            <div>
+                <p style="font-size:10px;color:#6e6e6e">If you want any information changed, email <a href='mailto:helmlearning2020@gmail.com'>helmlearning2020@gmail.com</a>.</p>
+            </div>
+
+        </div>
+        <div id="teachers" class="peasant info_page_4">
+          <p id='welcome_teacher' class='welcome' style="margin-bottom: 5px;"></p>
+        </div>
+        <div id="students" class="peasant info_page_4">
+            <p id='welcome_students' class='welcome' style="margin-bottom: 5px;"></p>
+            <div id="current_and_all_buttons" class="peasant" style="margin-left: 0px;">
+              <div style="width: 50%; float: left; margin-right: 5px;"><button id="all_students_button" style="width: 95%;" onclick="get_students('all', url)">See All Students</button></div>
+              <div style="margin-left: 50%; margin-right:5px;"><button id="current_button" style="width: 95%;" onclick="get_students('current', url)">See Current Session</button></div>
+            </div>
+            <div style="height:2px; background-color: gray; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; margin-right: 10px;"></div>
+            <div id="action_buttons" class="peasant" style="margin-left: 0px;">
+              <div style="width: 50%; float: left; margin-right: 5px;"><button id="copy_all_emails" style="width: 95%;" onclick="copy_emails()">Copy emails</button></div>
+              <div style="margin-left: 50%; margin-right:5px;"><button id="send_er2" style="width: 95%;" onclick="send_er1()">Send reminder email</button></div>
+            </div>
+            <p id='total_students'></p>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+        var imagesize = 150;
+        var url = document.location.href
+        if (url.indexOf('jhers-bfiwhkbs-efiuib-wi-esah-an-aderdIBRI-RA78-3uhfisa-bhrbsd-fiergis-uHBFEBh-hbhbH-KBjhkqQ') == -1 || url.indexOf('qQjnjkbniKJ-BijkbI-Ygi7ygHB-Iiuhgi7uijBhkbhj-Bhb') == -1) {
+            window.location.href = 'selectclass.html'
+        }
+        var class_name = url.split('qQ')[1];
+        console.log(">>>>>" + class_name)
+        for (i = 0; i < name.indexOf('-'); i++) {
+          class_name = class_name.replace('-', " ");
+        }
+
+        ///////////// TEACHER INFO ////////////////
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/get_teacher_info?classes=' + name;
+        const request = new XMLHttpRequest();
+        
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+          var data = JSON.parse(this.response);
+          console.log(data)
+          if (data.length == 0) {
+            document.getElementById('welcome_teacher').innerHTML = "Hmm. There's no teacher for this class.."
+            return;
+          } else {
+            document.getElementById('welcome_teacher').innerHTML = "Here is info about you"
+          }
+          for (var i = 0; i < data.length; i++) {
+            var bigdiv = document.createElement("div");
+            var imagediv = document.createElement("div");
+            imagediv.style.width = imagesize + "px";
+            imagediv.style.float = "left";
+            imagediv.style.paddingLeft = "20px";
+            imagediv.style.paddingRight = "20px";
+            imagediv.style.paddingTop = "20px";
+            imagediv.style.borderRadius = "40%";
+            // imagediv.style.marginLeft = "0px";
+            var teacher_image = new Image(imagesize, imagesize); // width, height
+            teacher_image.src = data[i]['image'];
+            teacher_image.classList.add('circle')
+            imagediv.appendChild(teacher_image)
+            bigdiv.appendChild(imagediv)
+            // doppelimagediv.style.width = 350-imagesize + "px";
+            // doppelimagediv.style.float = "right";
+            var teacher_name = document.createElement("H2")
+            teacher_name.innerHTML = data[i]['name']
+            bigdiv.appendChild(teacher_name)
+            
+
+            var teacher_yog = document.createElement("P")
+            teacher_yog.innerHTML = data[i]['yog'] + "<br>" + '<a href="mailto:' + data[i]['email'] + '">' + data[i]['email'] + '</a>'
+            bigdiv.appendChild(teacher_yog)
+
+            var teacher_desc = document.createElement("P")
+            teacher_desc.innerHTML = data[i]['description']
+            bigdiv.appendChild(teacher_desc)
+            if (i != data.length-1) {
+              bigdiv.style.paddingBottom = "10px";
+            }
+            document.getElementById("teachers").appendChild(bigdiv)
+          }
+        }
+        request.send();
+
+        var all_class = "selected_button"
+        var current_class = "unselected_button"
+        if (url.indexOf("QQQ") != -1) { /////////////CURRENT SESSION/////////////
+          current_class = "selected_button"
+          all_class = "unselected_button"
+          document.getElementById('all_students_button').style.backgroundColor = "white";
+          document.getElementById('all_students_button').style.color = "black";
+          document.getElementById('current_button').style.backgroundColor = "#757575";
+          document.getElementById('current_button').style.color = "black";
+          
+          const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/admin_get_class_info?filter=current&class=' + name; //change link
+          const request = new XMLHttpRequest();
+          
+          request.open('GET', url_a)
+          //var taking = new XMLHttpRequest();
+          request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          request.onload = function () {
+            
+            var data = JSON.parse(this.response);
+            var le_class_name = data["Name"];
+            console.log(name)
+            var short_name = data["Short name"];
+            var description = data["Description"];
+            var time = data["Time"];
+            var week = data["Week"];
+            var age = data["Age"];
+            var zoom = data["Zoom"]
+            var sharing_mats = data["Sharing mats"]
+            document.getElementById('header_signup').innerHTML = 'Details about your class';
+            document.getElementById('welcome').innerHTML = 'Here are some details about the ' + short_name + ' class';
+            document.getElementById('info_name').innerHTML = '<i>Class Name:</i> ' + le_class_name;
+            document.getElementById('info_description').innerHTML = '<i>Description:</i> ' + description;
+            document.getElementById('info_time').innerHTML = '<i>Class Time:</i> ' + time;
+            document.getElementById('info_week').innerHTML = "<i>Dates:</i> " + week;
+            document.getElementById('info_age').innerHTML = "<i>Grade Range:</i> " + age;
+            document.getElementById('info_sharingmats').innerHTML = "<i>Sharing Materials Folder:</i> " + "<a href='" + sharing_mats + "'>" + sharing_mats + "</a>";
+            if (zoom != "TBD") {
+              document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> <a href=" + zoom + ">" + zoom + "</a>";
+            } else {
+              document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> Not assigned yet";
+            }
+            
+            var students = data["Students"]
+            document.getElementById('total_students').innerHTML = students[0];
+            document.getElementById('welcome_students').innerHTML = 'Here are the students in your current session';
+            for (i = 1; i < students.length; i++) {
+              var student_name = document.createElement("P")
+              student_name.innerHTML = students[i][0] + " <br>" + "Grade " + students[i][2] + " | " + "Lives in " + students[i][1] 
+              student_name.innerHTML += "<br> Found HELM by: " + students[i][3] + " <br>Signed up on " + students[i][4]
+              document.getElementById("students").appendChild(student_name)
+            }
+          }
+          request.send()
+        }
+        
+        
+        
+        
+        
+        
+        
+        else { /////////////ALL SESSION/////////////
+          document.getElementById('all_students_button').style.backgroundColor = "#757575";
+          document.getElementById('all_students_button').style.color = "black";
+          document.getElementById('current_button').style.backgroundColor = "white";
+          document.getElementById('current_button').style.color = "black";
+          const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/admin_get_class_info?filter=all&class=' + name;
+          const request = new XMLHttpRequest();
+          
+          request.open('GET', url_a)
+          //var taking = new XMLHttpRequest();
+          request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          request.onload = function () {
+            
+            var data = JSON.parse(this.response);
+            var le_class_name = data["Name"];
+            console.log(name)
+            var short_name = data["Short name"];
+            var description = data["Description"];
+            var time = data["Time"];
+            var week = data["Week"];
+            var age = data["Age"];
+            var zoom = data["Zoom"]
+            var sharing_mats = data["Sharing mats"]
+            var class_rec = data["Class recordings"]
+            document.getElementById('header_signup').innerHTML = 'Details about your class';
+            document.getElementById('welcome').innerHTML = 'Here are some details about the ' + short_name + ' class';
+            document.getElementById('info_name').innerHTML = '<i>Class Name:</i> ' + le_class_name;
+            document.getElementById('info_description').innerHTML = '<i>Description:</i> ' + description;
+            document.getElementById('info_time').innerHTML = '<i>Class Time:</i> ' + time;
+            document.getElementById('info_week').innerHTML = "<i>Dates:</i> " + week;
+            document.getElementById('info_age').innerHTML = "<i>Grade Range:</i> " + age;
+            document.getElementById('info_sharingmats').innerHTML = "<i>Sharing Materials Folder:</i> " + "<a target='_blank' href='" + sharing_mats + "'>" + sharing_mats + "</a>";
+            if (class_rec == null) {
+              document.getElementById('info_classrec').innerHTML = "<i>Class recordings Folder:</i> No folder created for your class session";
+            } else {
+              document.getElementById('info_classrec').innerHTML = "<i>Class recordings Folder:</i> " + "<a target='_blank' href='" + class_rec + "'>" + class_rec + "</a>";
+            }
+            if (zoom != "TBD") {
+              document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> <a href=" + zoom + ">" + zoom + "</a>";
+            } else {
+              document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> Not assigned yet";
+            }
+            
+            var students = data["Students"]
+            document.getElementById('total_students').innerHTML = students[0];
+            document.getElementById('welcome_students').innerHTML = 'Here are all of the students in your class';
+            for (i = 1; i < students.length; i++) {
+              var student_name = document.createElement("P")
+              student_name.innerHTML = students[i][0] + " <br>" + "Grade " + students[i][2] + " | " + "Lives in " + students[i][1] 
+              student_name.innerHTML += "<br> Found HELM by: " + students[i][3] + " <br>Signed up on " + students[i][4]
+              document.getElementById("students").appendChild(student_name)
+            }
+          }
+          request.send()
+        }
+        function go_to_classes() {
+            window.location.href = 'https://helmlearning.com/our-classes';
+        }
+
+        function get_students(which, url) {
+          var name = url.split('qQ')[1];
+          if (which == "all" && url.indexOf('QQQ') != -1) {
+            window.location.href = 'myclass.html?jhers-bfiwhkbs-efiuib-wi-esah-an-aderdIBRI-RA78-3uhfisa-bhrbsd-fiergis-uHBFEBh-hbhbH-KBjhkqQ' + name + 'qQjnjkbniKJ-BijkbI-Ygi7ygHB-Iiuhgi7uijBhkbhj-Bhb';
+          } else if (which == "current" && url.indexOf('QQQ') == -1) {
+            window.location.href = 'myclass.html?jhers-bfiwhkbs-efiuib-wi-esah-an-aderdIBRI-RA78-3uhfisa-bhrbsd-fiergis-uHBFEBh-hbhbH-KBjhkqQ' + name + 'qQjnjkbniKJ-BijkbI-Ygi7ygHB-Iiuhgi7uijBhkbhj-BhbQQQ';
+          } else {
+            return
+          }
+        }
+
+        function copy_emails() {
+          
+          
+          const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/admin_action_buttons?action=copy&class=' + name;
+          const request = new XMLHttpRequest();
+          
+          request.open('GET', url_a)
+          //var taking = new XMLHttpRequest();
+          request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          var emails = "hello"
+          request.onload = function () {
+            console.log("Hello")
+            var emails = "hello"
+            var dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            var data = JSON.parse(this.response);
+            emails = data[0]
+            console.log("|||" + emails)
+            dummy.value = emails;
+            console.log("|||" + data)
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            alert("Copied! Now go to your email, and paste the emails (bcc them of course)")
+          }
+          request.send()
+          //var emails = "Rip this isn't working yet"
+          //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+          
+        }
+
+        function send_er1() {
+          var r = confirm("You will be sending all the students in your current session an email that the class is starting. Press Ok to send, or Cancel to cancel.")
+          if (r == false) {
+            return
+          }
+          var q = prompt('Type "Send" to send all emails')
+          console.log(q)
+          if (q != "send" && q != "Send") {
+            return
+          }
+          
+          const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/admin_action_buttons?action=er1&class=' + name;
+          const request = new XMLHttpRequest();
+          
+          request.open('GET', url_a)
+          //var taking = new XMLHttpRequest();
+          request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          request.onload = function () {
+            
+            var data = JSON.parse(this.response);
+            var yes = data[0]
+            document.getElementById("send_er2").innerHTML = "Sent!"
+          }
+          request.send()
+          document.getElementById("send_er2").innerHTML = "Sending..."
+          
+        }
+
+    </script>
+  </body>
+</html>

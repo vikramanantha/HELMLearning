@@ -1,0 +1,90 @@
+<!--
+Vikram Anantha
+Sept 16 2021
+Nayachen Movement
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Confirming Teacher Signup</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='logo.png', width=320px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup">Confirming Teacher Signup</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            
+            <div id="input_fields_day_dropdown" class="input_fields" class="peasant">
+                <h2>Please read and check all boxes acknowledging your responsibities as a HELM Teacher *</h2>
+                <div style="padding:10px 0px 10px 0px;">
+                    <input type="checkbox" id="resp_1" value="resp_1" class="checkcheck">
+                    <label for="resp_1">I understand that HELM will send me emails and that I should be attentive to my email / texts</label><br>
+                </div>
+                <div style="padding:10px 0px 10px 0px;">
+                    <input type="checkbox" id="resp_2" value="resp_2" class="checkcheck">
+                    <label for="resp_2">I will make sure I remember to join my classes on time</label><br>
+                </div>
+                <div style="padding:10px 0px 10px 0px;">
+                    <input type="checkbox" id="resp_3" value="resp_3" class="checkcheck">
+                    <label for="resp_3">I understand I have to communicate with HELM if I there are any issues that come up</label><br>
+                </div>
+            </div>
+
+            <button style="width:100%;" onclick="submit()">Submit & Confirm you will teach this class</button>
+        </div>
+        
+      </body>
+</html>
+<script>
+    
+    
+    function submit() {
+        var ilysa = document.location.href.split('?')[1]
+        var numq = 3;
+        var continu = true;
+
+        var params = ilysa.split('&')
+        var url_c = 'https://signup.helmlearning.com:5000/api/v1/resources/signup_to_be_teach_2_5?name=' + params[0];
+        const request = new XMLHttpRequest();
+        request.open('GET', url_c)
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            console.log(data)
+            for (var i = 1; i <= numq; i++) {
+                if (!document.getElementById("resp_" + i).checked) continu = false;
+            }
+            if (continu) {
+                if (data[0] == "0") {
+                    var fname = params[0];
+                    window.location.href = 'confirmation.html?' + fname + '&class=' + fname + '&thistimeitis=signup3stuckinatree';
+                } else {
+                    var fname = params[0];
+                    window.location.href = 'confirmation.html?' + fname + '&class=' + fname + '&thistimeitis=signup3stuckinatreefale';
+                }
+            } else {
+                alert("Please check all boxes to continue. \nIf you are unable to agree with any statements, contact HELM Learning.")
+                return;
+            }
+        }
+        console.log(request);
+        request.send()
+        
+    }
+</script>

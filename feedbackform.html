@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Feedback Form for this class</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='logo.png', width=320px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup"></h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="input_fields" class="peasant" style="background-color: #aec1f5;">
+                <h2>Let us know how we did!</h2>
+                <h3 style="color: black; font-size: 14px;">Thank you for taking this class! HELM is always looking for feedback, so if you could fill out this form letting us know how the class went, that would be greatly appreciated! </h3>
+            </div>
+            <div id="instructions">
+                <h3> Please fill in how the class went for you! <br>(* means required)</h3>                
+            </div>
+            <div id="input_fields_first_name" class="input_fields" class="peasant">
+                <h2>Student Name*</h2>
+                <input disabled type="text" id="first_name" onfocus="popup(id)" onblur="popdown(id)" placeholder="This is where the student's name will go" required>
+            </div>
+            <div id="input_fields_email" class="input_fields" class="peasant">
+                <h2>Student Email*</h2>
+                <input disabled type="email" id="email" onfocus="popup(id)" onblur="popdown(id)" placeholder="This is where the student's email will go"required>
+            </div>
+            
+            <div id="input_fields_class" class="input_fields" class="peasant">
+                <h2>Class*</h2>
+                <input disabled type="text" id="class" onfocus="popup(id)" onblur="popdown(id)" placeholder="Which class you took"required>
+            </div>
+            <div id="input_fields_like_the_content" class="input_fields" class="peasant">
+                <h2>How did you like the content? <br>  (1 means you hated it, 5 means you loved it)*</h2>
+                <input type="number" id="like_the_content" onfocus="popup(id)" onblur="popdown(id)" placeholder="Enter a number from 1 - 5">
+            </div>
+            <div id="input_fields_hard_the_content" class="input_fields" class="peasant">
+                <h2>How hard was the content? <br>  (1 means too easy, 5 means too hard)*</h2>
+                <input type="number" id="hard_the_content" onfocus="popup(id)" onblur="popdown(id)" placeholder="Enter a number from 1 - 5">
+            </div>
+            <div id="input_fields_fast_the_content" class="input_fields" class="peasant">
+                <h2>How fast was the pacing? <br>  (1 means too slow, 5 means too fast)*</h2>
+                <input type="number" id="fast_the_content" onfocus="popup(id)" onblur="popdown(id)" placeholder="Enter a number from 1 - 5">
+            </div>
+            <div id="input_fields_feedback_the_content" class="input_fields" class="peasant">
+                <h2>Are there any comments / feedback you have about this class for the teacher?</h2>
+                <input type="text" id="feedback_the_content" onfocus="popup(id)" onblur="popdown(id)" placeholder="Enter any comments you have about the class">
+            </div>
+            <div id="submit" class="input_fields" class="peasant">w
+                <button onclick="submit()" style="width:80px;">Submit</button>
+            </div>
+            
+        </div>
+
+
+
+      </body>
+      <script>
+          
+
+          var ilysa = document.location.href
+          var student_id = ilysa.split('?')[1].split('&')[0]
+          var name = ilysa.split('?')[1].split('&')[1].split('=')[1];
+          console.log(name)
+          var class_name = name.toUpperCase()
+          for (i = 0; i < name.indexOf('-'); i++) {
+            class_name = class_name.replace('-', " ");
+          }
+          //var name = "Fun & Games with Python";
+          var the_class_name = document.getElementById("header_signup");
+          the_class_name.innerHTML = "Feedback form for the " + class_name + ' class';
+
+        const get_id = new XMLHttpRequest();
+        get_id.open('GET', "https://signup.helmlearning.com:5000/api/v1/resources/get_id?fname=__&email__&id=" + student_id)
+        get_id.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        get_id.onload = function () {
+            var data = JSON.parse(this.response);
+            var fname = data['Student_fname']
+            for (i = 0; i < fname.indexOf('$'); i++) {
+                fname = fname.replace('$', " ");
+            }
+            var email = data['Student_email']
+            console.log(fname);
+            console.log(email);
+            //document.getElementById('welcome').innerHTML = 'Welcome to HELM, ' + fname + '<br>You are now signed up for this class. Here are some details about this class:';
+            fname_textbox = document.getElementById('first_name');
+            email_textbox = document.getElementById('email');
+            class_textbox = document.getElementById('class');
+            fname_textbox.value = fname;
+            email_textbox.value = email;
+            class_textbox.value = name;
+        }
+        get_id.send()
+
+          
+          
+          function popup(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+            textbox_div.style.transitionTimingFunction = "ease-out";
+            textbox_div.style.transition = "all 0.25s";
+            textbox_div.style.marginBottom = "20px";
+            textbox_div.style.marginTop = "0px";
+            textbox_div.style.marginLeft = "-3px";
+              
+          }
+
+          function popdown(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "None";
+            textbox_div.style.marginBottom = "10px";
+            textbox_div.style.marginLeft = "0px";
+
+          }
+
+          function submit() {
+          var ilysa = document.location.href
+          var student_id = ilysa.split('?')[1].split('&')[0]
+          var name = ilysa.split('?')[1].split('&')[1].split('=')[1];
+
+              like = document.getElementById("like_the_content").value;
+              console.log(like);
+            //LIKE THE CONTENT
+              if (like == '') {
+                alert("It is required that you put this value")
+                document.getElementById("like_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("like_the_content").style.borderColor = ""
+              }
+              if (like > 5 || like < 1) {
+                alert("Please enter a number between 1 and 5 (inclusive)")
+                document.getElementById("like_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("like_the_content").style.borderColor = ""
+              }
+            //HARD THE CONTENT
+              hard = document.getElementById("hard_the_content").value;
+              console.log(hard);
+              if (hard == '') {
+                alert("It is required that you put this value")
+                document.getElementById("hard_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("hard_the_content").style.borderColor = ""
+              }
+              if (hard > 5 || hard < 1) {
+                alert("Please enter a number between 1 and 5 (inclusive)")
+                document.getElementById("hard_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("hard_the_content").style.borderColor = ""
+              }
+            //FAST THE CONTENT
+              fast = document.getElementById("fast_the_content").value;
+              console.log(fast);
+              if (fast == '') {
+                alert("It is required that you put this value")
+                document.getElementById("fast_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("fast_the_content").style.borderColor = ""
+              }
+              if (fast > 5 || fast < 1) {
+                alert("Please enter a number between 1 and 5 (inclusive)")
+                document.getElementById("fast_the_content").style.borderColor = "red"
+                return;
+              } else {
+                document.getElementById("fast_the_content").style.borderColor = ""
+              }
+
+              comment = document.getElementById("feedback_the_content").value;
+              console.log(comment);
+
+              for (var i = 0; i < comment.indexOf(' '); i++) {
+                comment = comment.replace(' ', "$");
+              }
+
+              var email_url = 'https://signup.helmlearning.com:5000/api/v1/resources/feedback?id=' + student_id + "&class=" + name + "&like=" + like + "&hard=" + hard + "&fast=" + fast + "&comment=" + comment;
+              const email_request = new XMLHttpRequest();
+              email_request.open('GET', email_url)
+              email_request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+              email_request.onload = function () {
+                var data = JSON.parse(this.response);
+                var id = data['Student_id_hashed']
+                console.log(id)
+                alert("You are about to submit feedback for the " + class_name + " class.")
+                console.log("asdf")
+                
+                var the_class_name = document.getElementById("header_signup");
+                the_class_name.innerHTML = "Sign up for the " + class_name + ' class';
+
+                window.location.href = 'confirmation.html?' + student_id + '&class=' + name + '&thistimeitis=feedback';
+              }
+              email_request.send()
+              
+          }
+
+      </script>
+
+
+
+</html>

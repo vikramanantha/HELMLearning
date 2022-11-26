@@ -1,0 +1,270 @@
+<!--Content-Type: text/html;--->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HELM Teacher Signup Form</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="head">
+        <a href="http://teachers.helmlearning.com">
+            <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png' , width=320px>
+        </a>
+        <div id='header_text'>
+            <h1 id="header_signup">Show interest to teach at HELM! </h1>
+        </div>
+    </div>
+
+    <div id="root">
+        <div id="new_sys_1" class="input_fields" class="peasant" style="background-color: #ca99ff;">
+            <button id="showmore1" class="arrowbutton"><i class="arrow right"></i></button>
+            <h2 style="display:inline-block;">What is HELM Learning?</h2>
+            
+            <h3 style="color: black; font-size: 14px;" class="hidin1">
+                Our goal is to help students around the world get an education while schools are out, and if you are
+                passionate about this, we would love to have you on our team!
+                <br><br>
+                We are looking for driven individuals who are passionate about subjects they want to spread with others.
+            </h3>
+        </div>
+        <div id="new_sys_2" class="input_fields" class="peasant" style="background-color: #ca99ff;">
+            <button id="showmore2" class="arrowbutton"><i class="arrow right"></i></button>
+            <h2 style="display:inline-block;">Logistics for Teaching</h2>
+            
+            <h3 style="color: black; font-size: 14px;" class="hidin2">
+                - HELM Learning classes are usually synchronous classes over Zoom weekly during summer break. Classes run once a day, from Monday to Friday for 60 - 90 mins a day (sessions usually only meet for that week)<br>
+                - You are welcome to create your own curriculum, although for some subjects we have curriculum created by previous teachers<br>
+                - You will earn around 10 - 15 community service hours depending on how long your class is per session<br>
+                - You can teach with a partner, just make sure both people fill out the sign up forms
+            </h3>
+        </div>
+        <div id="new_sys_2" class="input_fields" class="peasant" style="background-color: #ca99ff;">
+            <button id="showmore4" class="arrowbutton"><i class="arrow right"></i></button>
+            <h2 style="display:inline-block;">Benefits of teaching at HELM Learning</h2>
+            
+            <h3 style="color: black; font-size: 14px;" class="hidin4">
+                Teaching your class through HELM means<br>
+                <br>
+                - Zoom links will automatically be created for your class with our premium Zoom account<br>
+                - A class recording folder will be automatically created<br>
+                - Reminder emails to students will be automatically sent out<br>
+                - You can see and email your students with the click of a button<br>
+                - You will be able to earn Community Service Hours<br>
+                ---- either for your school<br>
+                ---- or for the <a href='https://presidentialserviceawards.gov/'>Presidential Volunteer Service Award</a><br>
+            </h3>
+        </div>
+        <div id="new_sys_3" class="input_fields" class="peasant" style="background-color: #ca99ff;">
+            <h2>Fill our the interest form!</h2>
+            <h3 style="color: black; font-size: 14px;">
+                This interest form is for students who want to be teachers
+                <br>
+                <br>After filling out this form, you can either continue to the full teacher signup form,
+                or you can receive a link to complete the full teacher signup form later
+            </h3>
+        </div>
+        
+        <div id="instructions">
+            <h3> Note: Only the teacher of the class should fill this
+                out <br>(* means required)</h3>
+        </div>
+
+        <div id="input_fields_first_name" class="input_fields" class="peasant">
+            <h2>Your name *</h2>
+            <input type="text" id="first_name" onfocus="popup(id)" onblur="popdown(id)"
+                placeholder="Please enter your (the teacher's) name" required>
+        </div>
+
+        <div id="input_fields_email" class="input_fields" class="peasant">
+            <h2>Your email *</h2>
+            <input type="text" id="email" onfocus="popup(id)" onblur="popdown(id)"
+                placeholder="Please enter your (the teacher's) email" required>
+        </div>
+
+        <div id="input_fields_town" class="input_fields" class="peasant">
+            <h2>What town and state are you from? *</h2>
+            <input type="text" id="town" onfocus="popup(id)" onblur="popdown(id)"
+                placeholder="Please enter where you (the teacher) lives" required>
+        </div>
+
+        <div id="input_fields_heard_about" class="input_fields" class="peasant">
+            <h2>How did you learn about HELM? *</h2>
+            <p>This doesn't affect anything, we just want to know</p>
+            <input type="text" id="heard_about" onfocus="popup(id)" onblur="popdown(id)"
+                placeholder="Please enter how you learned about us" required>
+        </div>
+
+        <div id="input_fields_class_short_name" class="input_fields" class="peasant">
+            <h2>In 1-2 words, describe the subject you want to teach *</h2>
+            <p>This is the code-name / short-name for your class<br>Examples: Python, Human Biology, Economcics, etc</p>
+            <input type="text" id="class_short_name" onfocus="popup(id)" onblur="popdown(id)"
+                placeholder="Subject of your class" required>
+        </div>
+
+        <div id="submit" class="input_fields" class="peasant" style='display:flex'>
+            <button id='submit_button_1' onclick="submit(1)" style='width:40%'>Submit interest form (get a link to fill out signup form later)</button>
+            <p style='width:20%; text-align: center;'>Or</p>
+            <button id='submit_button_2' onclick="submit(2)" style='width:40%'>Continue to full signup form</button>
+        </div>
+        <div id="submit" class="input_fields" class="peasant">
+            
+        </div>
+
+    </div>
+
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+
+    var ilysa = document.location.href
+    if (!ilysa.includes("?")) {
+        window.location.href = '?teacher'
+    }
+    var params = ilysa.split('?')[1].split('&')
+
+    var dots1 = false;
+    var dots2 = false;
+    $(document).ready(function(){  
+        $(".hidin1").slideUp(1);
+        $(".hidin2").slideUp(1);
+        $(".hidin4").slideUp(1);
+        $("#showmore1").click(function() {
+            if (dots1 === false) {
+                $(".hidin1").slideDown(300);
+                document.getElementById("showmore1").innerHTML = '<i class="arrow down"></i>';
+                dots1 = true;
+            } else {
+                $(".hidin1").slideUp(300);
+                document.getElementById("showmore1").innerHTML = '<i class="arrow right"></i>';
+                dots1 = false
+            }
+        })
+
+    
+        $("#showmore2").click(function() {
+            if (dots2 === false) {
+                $(".hidin2").slideDown(300);
+                document.getElementById("showmore2").innerHTML = '<i class="arrow down"></i>';
+                dots2 = true;
+            } else {
+                $(".hidin2").slideUp(300);
+                document.getElementById("showmore2").innerHTML = '<i class="arrow right"></i>';
+                dots2 = false
+            }
+        })     
+        $("#showmore4").click(function() {
+            if (dots2 === false) {
+                $(".hidin4").slideDown(300);
+                document.getElementById("showmore4").innerHTML = '<i class="arrow down"></i>';
+                dots2 = true;
+            } else {
+                $(".hidin4").slideUp(300);
+                document.getElementById("showmore4").innerHTML = '<i class="arrow right"></i>';
+                dots2 = false
+            }
+        }) 
+            
+    });
+
+    function popup(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+        textbox_div.style.transitionTimingFunction = "ease-out";
+        textbox_div.style.transition = "all 0.25s";
+        textbox_div.style.marginBottom = "20px";
+        textbox_div.style.marginTop = "0px";
+        textbox_div.style.marginLeft = "-3px";
+
+    }
+
+    function popdown(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "None";
+        textbox_div.style.marginBottom = "10px";
+        textbox_div.style.marginLeft = "0px";
+
+    }
+
+    function submit(option) {
+        //GET DA VARS
+        document.getElementById('submit_button_' + option).innerHTML = "Processing..."
+        var all_the_data = [];
+        all_the_data.push(document.getElementById("first_name").value);
+        all_the_data.push(document.getElementById("email").value);
+        all_the_data.push(document.getElementById("town").value);
+        all_the_data.push(document.getElementById("heard_about").value);
+        all_the_data.push(document.getElementById("class_short_name").value);
+        
+        if (document.getElementById("first_name").value == '') {
+            document.getElementById("first_name").style.borderColor = "red"
+            document.getElementById('submit_button_' + option).innerHTML = "Something's wrong..."
+            return
+        } else {document.getElementById("first_name").style.borderColor = ""}
+        if (document.getElementById("email").value == '') {
+            document.getElementById("email").style.borderColor = "red"
+            document.getElementById('submit_button_' + option).innerHTML = "Something's wrong..."
+            return
+        } else {document.getElementById("email").style.borderColor = ""}
+        if (document.getElementById("town").value == '') {
+            document.getElementById("town").style.borderColor = "red"
+            document.getElementById('submit_button_' + option).innerHTML = "Something's wrong..."
+            return
+        } else {document.getElementById("town").style.borderColor = ""}
+        if (document.getElementById("heard_about").value == '') {
+            document.getElementById("heard_about").style.borderColor = "red"
+            document.getElementById('submit_button_' + option).innerHTML = "Something's wrong..."
+            return
+        } else {document.getElementById("heard_about").style.borderColor = ""}
+        if (document.getElementById("class_short_name").value == '') {
+            document.getElementById("class_short_name").sstyle.borderColor = "red"
+            document.getElementById('submit_button_' + option).innerHTML = "Something's wrong..."
+            return
+        } else {document.getElementById("class_short_name").style.borderColor = ""}
+
+        for (var j = 0; j < all_the_data.length; j++) {
+            for (var i = 0; i < all_the_data[j].indexOf(' '); i++) {
+                all_the_data[j] = all_the_data[j].replace(' ', "º");
+            }
+        }
+        console.log(all_the_data)
+        var whichwich
+        var url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/show_interest_teacher';
+        url_b += "?length=" + all_the_data.length;
+        for (var j = 0; j < all_the_data.length; j++) {
+            url_b += "&"
+            url_b += "" + j + "=" + all_the_data[j];
+        }
+        console.log(url_b);
+        const request = new XMLHttpRequest();
+        request.open('GET', url_b)
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            var cache_location = data[1];
+            var link = data[2]
+            if (option == 1) {
+                var fname = 'chumuch…kayani'
+                window.location.href = 'confirmation.html?' + fname + '&class=' + cache_location + '&thistimeitis=interest';
+            } else {
+                window.location.href = link
+            }
+        }
+        request.send()
+
+    }
+</script>
+
+
+
+</html>

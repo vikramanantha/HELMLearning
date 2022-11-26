@@ -1,0 +1,52 @@
+<html>
+    <script>
+        const queryString = window.location.search;
+        console.log(queryString);
+        console.log(window.location.href)
+
+        if (window.location.href.includes("teachers.helmlearning.com")) {
+            if (window.location.href == "http://teachers.helmlearning.com/") {
+                window.location.href = "http://teachers.helmlearning.com/selectclass.html"
+            } else if (window.location.href == "http://teachers.helmlearning.com/newsession/") {
+                window.location.href = "https://forms.gle/jMrkn4H7bZjVJgFh7"
+            } else if (window.location.href.includes("?")) {
+                window.location.href = "http://teachers.helmlearning.com/verifyteacher.html?" + queryString.substring(1);
+            }
+        } else if (window.location.href.includes("signup.helmlearning.com")) {
+            if (window.location.href == "http://signup.helmlearning.com/") {
+                window.location.href = "http://helmlearning.com/our-classes.html";
+            } else if (window.location.href.includes("?")) {
+                if (queryString.substring(1) == "hindi") {
+                    window.location.href = "http://signup.helmlearning.com/class-signup.html?class=beginner-hindi";
+                } else if (queryString.substring(1) == "bsr") {
+                    window.location.href = "https://meerakkrishnan.wixsite.com/bigsisterreading/online-courses-1";
+                } else if (queryString.substring(1) == "async") {
+                    window.location.href = "https://helmlearning.com/our-classes.html#async-materials";
+                } else {
+                    window.location.href = "http://signup.helmlearning.com/class-signup.html?class=" + queryString.substring(1);
+                }
+            }
+        }
+
+
+        // if (window.location.href == "http://teachers.helmlearning.com/") {
+        //     window.location.href = "http://teachers.helmlearning.com/selectclass.html"
+        //     console.log("hiiiii")
+        // }
+        // else if (window.location.href == "http://teachers.helmlearning.com/") {
+        //     window.location.href = "http://teachers.helmlearning.com/selectclass.html"
+        //     console.log("hiiiii")
+        // }
+        // else if (document.location.href == "http://signup.helmlearning.com/") {
+        //     window.location.href = "https://helmlearning.com/our-classes";
+        //     console.log("yooooooooo")
+        // } else {
+        //     console.log(window.location.href)
+        //     window.location.href = "http://signup.helmlearning.com/page1.html?class=" + queryString.substring(1);
+        // }
+        // console.log(window.location.href)
+
+        // window.location.href = "https://helmlearning.com/our-team";
+        
+    </script>
+</html>

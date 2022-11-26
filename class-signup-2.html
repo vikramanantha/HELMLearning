@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>HELM Signup | Information about you</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+              <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png', width=325px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup"></h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="input_fields" class="peasant" style="background-color: #b5ffb0;">
+                <h2>Welcome Aboard!</h2>
+                <h3 style="color: black; font-size: 14px;">Looks like you are new to HELM! Please enter some more information about the student. </h3>
+                <h3 id='makethisgoback' style="color: black; font-size: 14px;">If this is incorrect, please go <a href="page1.html">back</a> and make sure the email and name you have typed in is the same as previous signup experieneces.</h3>
+            </div>
+            <div id="instructions">
+                <h3> Please enter more details about the student. (* means required)</h3>                
+            </div>
+            <div id="input_fields_first_name" class="input_fields" class="peasant">
+                <h2>Student Name*</h2>
+                <input disabled type="text" id="first_name" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter the student's name" required>
+            </div>
+            <div id="input_fields_email" class="input_fields" class="peasant">
+                <h2>Student Email*</h2>
+                <input disabled type="email" id="email" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter the student's email"required>
+            </div>
+            
+            <!-- <div id="input_fields_parent_email" class="input_fields" class="peasant">
+                <h2>Parent Email*</h2>
+                <input type="email" id="parent_email" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter a different email from before"required>
+            </div> -->
+            <div id="input_fields_age" class="input_fields" class="peasant">
+                <h2>Student Grade/Age (optional)</h2>
+                <input type="number" id="age" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter the student's grade (number)">
+            </div>
+            <div id="input_fields_town" class="input_fields" class="peasant">
+                <h2>Town (optional)</h2>
+                <input type="text" id="town" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter where the student lives (town)">
+            </div>
+            <div id="input_fields_state" class="input_fields" class="peasant">
+                <h2>State (optional)</h2>
+                <input type="text" id="state" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter where the student lives (state)">
+            </div>
+            <div id="input_fields_hearabout" class="input_fields" class="peasant">
+                <h2>How did you hear about us? (optional)</h2>
+                <input type="text" id="hearabout" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter how you learned about HELM">
+            </div>
+            <div id="input_fields_newsletter" class="input_fields" class="peasant">
+              <input type="checkbox" id="newsletter" value="newsletter" class="checkcheck" Checked>
+              <label for="newsletter">I would like to be notified about other HELM classes / updates</label><br>
+            </div>
+            <div id="submit" class="input_fields" class="peasant">
+                <button onclick="submit()" style="width:80px;">Submit</button>
+            </div>
+            
+        </div>
+
+
+
+      </body>
+      <script>
+           
+
+          var ilysa = document.location.href
+          var fname = ilysa.split('?')[1].split('&')[0].split('=')[1]
+          var email = ilysa.split('?')[1].split('&')[1].split('=')[1]
+          var name = ilysa.split('?')[1].split('&')[2].split('=')[1];
+          var which = ilysa.split('?')[1].split('&')[3];
+          console.log(name)
+          document.getElementById('makethisgoback').innerHTML = 'If this is incorrect, please go <a href="page1.html?class=' + name + '">back</a> and make sure the email and name you have typed in is the same as previous signup experieneces.'
+          var class_name = name.toUpperCase()
+          for (i = 0; i < name.indexOf('-'); i++) {
+            class_name = class_name.replace('-', " ");
+          }
+          for (i = 0; i < fname.indexOf('$'); i++) {
+            fname = fname.replace('$', " ");
+          }
+          //var name = "Fun & Games with Python";
+          var the_class_name = document.getElementById("header_signup");
+          the_class_name.innerHTML = "Sign up for the " + class_name + ' class';
+
+          console.log(fname);
+          console.log(email);
+          fname_textbox = document.getElementById('first_name');
+          email_textbox = document.getElementById('email');
+          fname_textbox.value = fname;
+          
+          email_textbox.value = email;
+          function popup(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+            textbox_div.style.transitionTimingFunction = "ease-out";
+            textbox_div.style.transition = "all 0.25s";
+            textbox_div.style.marginBottom = "20px";
+            textbox_div.style.marginTop = "0px";
+            textbox_div.style.marginLeft = "-3px";
+              
+          }
+
+          function popdown(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "None";
+            textbox_div.style.marginBottom = "10px";
+            textbox_div.style.marginLeft = "0px";
+
+          }
+
+          function submit() {
+              fname = document.getElementById("first_name").value;
+              console.log(fname);
+              email = document.getElementById("email").value;
+              console.log(email);
+              // pemail = document.getElementById("parent_email").value;
+              // console.log(pemail);
+              // if (pemail == '') {
+              //   alert("It is required that you put your Parent's email")
+              //   document.getElementById("parent_email").style.borderColor = "red"
+              //   return;
+              // } else {
+              //   document.getElementById("parent_email").style.borderColor = ""
+              // }
+              // if (!pemail.includes("@")) {
+              //   alert("Please enter a valid email")
+              //   document.getElementById("parent_email").style.borderColor = "red"
+              //   return;
+              // } else {
+              //   document.getElementById("parent_email").style.borderColor = ""
+              // }
+              // if (pemail == email) {
+              //     alert("Please enter a different email for Parent Email");
+              //     document.getElementById("parent_email").style.borderColor = "red"
+              //     return false;
+              // } else {
+              //   document.getElementById("parent_email").style.borderColor = ""
+              // }
+              pemail = ''
+              age = document.getElementById("age").value;
+              console.log(age);
+              town = document.getElementById("town").value;
+              console.log(town);
+              state = document.getElementById("state").value;
+              console.log(state);
+              hearabout = document.getElementById("hearabout").value;
+              console.log(hearabout);
+              newsletter = document.getElementById("newsletter").checked
+              // if (pemail == email) {
+              //     alert("Please enter a different email for Parent Email");
+              //     return false;
+              // }
+              for (var i = 0; i < fname.indexOf(' '); i++) {
+                fname = fname.replace(' ', "$");
+              }
+              for (var i = 0; i < town.indexOf(' '); i++) {
+                  town = town.replace(' ', "$");
+              }
+              for (var i = 0; i < hearabout.indexOf(' '); i++) {
+                  hearabout = hearabout.replace(' ', "$");
+              }
+              for (var i = 0; i < state.indexOf(' '); i++) {
+                  state = state.replace(' ', "$");
+              }
+
+              if (state == 'no$u' || state == 'No$u') {
+                alert("Stop it. Get some help");
+              }
+              // url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/page2-receive?fname=' + fname + '&email=' + email + '&pemail=' + pemail + '&age=' + age + '&town=' + town + '&state=' + state + '&hearabout=' + hearabout;
+              // url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/page2-receive';
+              // const request = new XMLHttpRequest()
+              
+              // request.open('GET', url_a, true);
+              // request.send(null)
+              var email_url = 'https://signup.helmlearning.com:5000/api/v1/resources/page2-receive?fname=' + fname + '&email=' + email + '&pemail=' + pemail + '&age=' + age + '&town=' + town + '&state=' + state + '&hearabout=' + hearabout + "&newsletter=" + newsletter;
+              const email_request = new XMLHttpRequest();
+              email_request.open('GET', email_url)
+              email_request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+              email_request.onload = function () {
+                var data = JSON.parse(this.response);
+                var id = data['Student_id_hashed']
+                console.log(id)
+                alert("You are signing up for the " + class_name + " class.")
+                console.log("asdf")
+
+                
+                var the_class_name = document.getElementById("header_signup");
+                the_class_name.innerHTML = "Sign up for the " + class_name + ' class';
+
+                window.location.href = 'class-signup-3.html?' + id + '&class=' + name + '&' + which;
+              }
+              email_request.send()
+              
+          }
+
+          function go_back() {
+            window.location.href = 'signup.html';
+          }
+      </script>
+
+
+
+</html>

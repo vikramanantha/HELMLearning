@@ -1,0 +1,188 @@
+<!-- Vikram Anantha
+Aug 15 2021
+Remaking the Classes Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    
+        <title>Our Classes - HELM Learning</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotofile('/')" class="p3topbutton">Home</button>
+            <button onclick="gotofile('our-team.html')" class="p3topbutton">Our Team</button>
+            <button onclick="gotopage('helmlearning.com/our-classes.html')" class="p3topbutton active">Our Classes</button>
+            <a id='center-top-image-link' href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png'></a>
+            <button onclick="gotofile('donations.html')" class="p3topbutton">Donations</button>
+            <button onclick="gotofile('contact-us.html')" class="p3topbutton">Contact Us</button>
+            <button onclick="gotofile('testimonials.html')" class="p3topbutton">Testimonials</button>
+            
+        </div>
+        <div id="header" >
+          <h1 id="section_headers" style="color:#fff">See the list of HELM Learning Classes!</h1>
+          <p style="color:#fff; text-align: center; font-size:17px;">Our classes are taught for <i>FREE</i> by our volunteer teachers. 
+            <br>Each class lasts 5 weeks (during school semester) or 5 days in one week (during school break), <br>and meet for 1-1.5 hours a day once a week after school. 
+            <br>
+            <br>All classes are held on Zoom, and are available to students of all ages and experience levels. 
+            <br>Browse our class selection below, and signup!</p>
+          <p id='toc' style="color:#fff; text-align: center; font-size:17px;"></p>
+        </div>
+
+        <div id="all_dem_classes">
+          <h1 style="padding-top:80px;padding-bottom: 80px;" id='tobedeleted'>Loading every class...</h1>
+        </div>
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2021 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+
+      </body>
+      <script>
+          var imagesize = 200;
+          var numcols = 3;
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/get_classes_info';
+            const request = new XMLHttpRequest();
+            
+            request.open('GET', url_a)
+            //var taking = new XMLHttpRequest();
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                console.log(data)
+                document.getElementById("all_dem_classes").removeChild(document.getElementById("tobedeleted"))
+                var subjects = data['Subjects'];
+                var toc = document.getElementById("toc")
+                toc.innerHTML = "Jump straight to our "
+                for (i = 0; i < subjects.length; i++) {
+                    // DIV //
+                    var sectiondiv = document.createElement("DIV")
+                    
+                    document.getElementById("all_dem_classes").appendChild(sectiondiv)
+                    sectiondiv.style.paddingTop = "30px";
+                    sectiondiv.style.paddingBottom = "30px";
+                        // HEAD TEXT //
+                        var sectionheader = document.createElement("H1")
+                        sectionheader.innerHTML = subjects[i] + " Classes";
+                        sectiondiv.id = subjects[i].toLowerCase()
+                        toc.innerHTML += "<a href='#" + sectiondiv.id + "'>" + sectiondiv.id + " classes</a>, "
+                        sectiondiv.appendChild(sectionheader)
+                        // CLASS //
+                        var classes = data['Classes'][subjects[i]];
+                        console.log(subjects[i])
+                        for (var j = 0; j < classes.length; j++) {
+                            if (j % numcols == 0) {
+                                var classrow = document.createElement("div")
+                                classrow.id = "classrow_" + (j/numcols) + "_" + i
+                                // console.log("classrow_" + (j/numcols)) + "_" + i
+                                classrow.setAttribute('class', "teacherrow")
+                                // classrow.setAttribute('class', "row")
+                                sectiondiv.appendChild(classrow)
+                            }
+                            var classcard = document.createElement("div")
+                            // teachercard.setAttribute("class", "col-sm-1")
+                            classcard.setAttribute("class", "teachercard")
+                            
+                            var imagediv = document.createElement("div");
+                            // imagediv.style.maxWidth = imagesize + "px";
+                            // imagediv.style.float = "left";
+                            // imagediv.style.paddingLeft = "20px";
+                            // imagediv.style.paddingRight = "20px";
+                            // imagediv.style.paddingTop = "20px";
+                            imagediv.setAttribute('class', 'imagediv')
+                            // imagediv.style.borderRadius = "40%";
+                            // imagediv.style.marginLeft = "0px";
+                            var teacher_image = new Image("100%", "100%"); // width, height
+                            teacher_image.src = classes[j]['Icon'];
+                            teacher_image.classList.add('circle')
+                            imagediv.appendChild(teacher_image)
+                            classcard.appendChild(imagediv)
+
+                            // CLASS TITLE //
+                            var classinfo = document.createElement("H2")
+                            classinfo.setAttribute("class", "teachername")
+                            classinfo.innerHTML = classes[j]['Name'];
+                            classcard.appendChild(classinfo)
+
+                            // CLASS TEACHER //
+                            var classinfo = document.createElement("P")
+                            classinfo.setAttribute("class", "teacherinfo")
+                            classinfo.innerHTML = "This class is taught by " + classes[j]['Teacher'];
+                            classcard.appendChild(classinfo)
+
+                            // CLASS BUTTON //
+                            var classinfo2 = document.createElement("A")
+                            classinfo2.href = "http://signup.helmlearning.com?" + classes[j]["Signup Link"]
+                            classinfo2.setAttribute("target", "_blank")
+                            
+
+                            var classinfo = document.createElement("BUTTON")
+                            classinfo.setAttribute("class", "signupbutton")
+                            classinfo.innerHTML = "Find more details and sign up here!";
+                            // classinfo.setAttribute("onclick", "gotosuspage(" + classes[j]["Signup Link"] + ")")
+                            classinfo2.appendChild(classinfo)
+                            classcard.appendChild(classinfo2)
+                            // ADD THAT TO THE CLASS
+
+                            // ADD THAT TO THE DIV
+                            // console.log("classrow_" + parseInt(j/numcols))
+                            document.getElementById("classrow_" + parseInt(j/numcols) + "_" + i).appendChild(classcard)
+                        }
+                            
+                            
+                            
+                            
+                        
+                    // ADD THAT TO THE BIG DIV
+                    
+                        
+                }
+
+              }
+            request.send()
+          
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+
+          function gotopage(website) {
+            window.location.href = "https://" + website
+          }
+          function gotofile(website) {
+            window.location.href = website
+          }
+          function gotosuspage(website) {
+            window.location.href = "http://" + website
+          }
+          function showNavBarStaff() {
+            var x = document.getElementById("p3top");
+            if (x.className === "topnav") {
+              x.className += " responsive";
+            } else {
+              x.className = "topnav";
+            }
+          }
+      </script>
+
+
+
+</html>

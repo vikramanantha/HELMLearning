@@ -1,0 +1,412 @@
+<!-- Vikram Anantha
+Aug 7 2021
+Remaking the Teachers Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    
+        <title>Our Team - HELM Learning</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotofile('/')" class="p3topbutton">Home</button>
+            <button onclick="gotopage('helmlearning.com/our-team.html')" class="p3topbutton active">Our Team</button>
+            <button onclick="gotofile('our-classes.html')" class="p3topbutton">Our Classes</button>
+            <a id='center-top-image-link' href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png'></a>
+            <button onclick="gotofile('donations.html')" class="p3topbutton">Donations</button>
+            <button onclick="gotofile('contact-us.html')" class="p3topbutton">Contact Us</button>
+            <button onclick="gotofile('testimonials.html')" class="p3topbutton">Testimonials</button>
+            
+        </div>
+        <div id="header">
+          <h1 id="section_headers" style="color:#fff">Meet the HELM Learning Team</h1>
+          <p id='toc' style="color:#fff; text-align: center; font-size:17px;"></p>
+        </div>
+
+        <div id="teachers" style="margin-top:40px">
+          <h1 id="section_headers" style="color:#5434ab">Meet the</h1>
+          <a href='http://teachers.helmlearning.com/interest' target='_blank'><img src='https://helm-logos.s3.amazonaws.com/helm-teachers-logo.png' style="width:600px; max-width:80%; margin-bottom:30px;" ></a>
+          <p style="text-align: center;font-size:20px;color:#5434ab;">Meet every teacher who has ever taught at HELM</p>
+          <h1 id='tobedeleted'>Have to use brain power for this...</h1>
+        </div>
+
+        <div id="teacher-signup">
+          <div class='blingbling1'><h1 id="section_headers" style="color:#fff; font-size:max(30px,4vw);">Want to teach something you are passionate about?</h1></div>
+          <div class='blingbling2'><button class='p3button' onclick="gotosuspage('teachers.helmlearning.com/signup')">Sign up to be a teacher here</button></div>
+        </div>
+
+        <div id="managers">
+          <h1 id="section_headers" style="color:#2830c8">Meet the </h1>
+          <img src='https://helm-logos.s3.amazonaws.com/helm-management-logo.png' style="width:600px; max-width:80%" >
+          <h1 id="section_headers" style="color:#2830c8; margin-bottom:30px;">Team</h1>
+          <p style="text-align: center;font-size:20px;color:#2830c8;">Meet every manager who helped manage logistics for HELM classes</p>
+          <h1 id='tobedeleted'>Have to use brain power for this...</h1>
+        </div>
+
+        <div id="developers">
+          <h1 id="section_headers" style="color:#50b480">Meet the </h1>
+          <img src='https://helm-logos.s3.amazonaws.com/helm-developers-logo.png' style="width:600px; margin-bottom:30px; max-width:80%" >
+          <p style="text-align: center;font-size:20px;color:#50b480;">Meet every developer who are helping develop the HELM platform</p>
+          <h1 id='tobedeleted'>Have to use brain power for this...</h1>
+        </div>
+
+        <div id="speakers">
+          <h1 id="section_headers" style="color:#e03965">Meet the </h1>
+          <img src='https://helm-logos.s3.amazonaws.com/helm-speakers-logo.png' style="width:600px; margin-bottom:30px; max-width:80%" >
+          <p style="text-align: center;font-size:20px;color:#e03965;">Meet every speaker who have given presentations at HELM keynotes</p>
+          <h1 id='tobedeleted'>Have to use brain power for this...</h1>
+        </div>
+
+        <!-- <div id="helmclubmembers">
+          <h1 id="section_headers" style="color:#39b1e0">Meet the HELM Club Members</h1>
+          <h1 id='tobedeleted'>Have to use brain power for this...</h1>
+        </div> -->
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2022 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+      </body>
+      <script>
+          var imagesize = 250;
+          var numcols = 3;
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/get_teacher_info?classes=all';
+            const request = new XMLHttpRequest();
+            
+            request.open('GET', url_a)
+            //var taking = new XMLHttpRequest();
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                console.log(data)
+                var jumpto = document.getElementById("toc")
+                jumpto.innerHTML = "Jump straight to our "
+
+                var teachers = data['Teachers'];
+                document.getElementById("teachers").removeChild(document.getElementById("tobedeleted"))
+                jumpto.innerHTML += "<a href='#teachers'>Teachers</a>, "
+                for (i = 0; i < teachers.length; i++) {
+                    if (i % numcols == 0) {
+                      var teacherrow = document.createElement("div")
+                      teacherrow.id = "teacherrow_" + (i/numcols)
+                      teacherrow.setAttribute('class', "teacherrow")
+                      // teacherrow.setAttribute('class', "row")
+                      document.getElementById("teachers").appendChild(teacherrow)
+                    }
+                    var teachercard = document.createElement("div")
+                    // teachercard.setAttribute("class", "col-sm-1")
+                    teachercard.setAttribute("class", "teachercard")
+                    
+                    // teachercard.innerHTML = teachers[i]['name'];
+                    
+                    var imagediv = document.createElement("div");
+                    // imagediv.style.maxWidth = imagesize + "px";
+                    // imagediv.style.float = "left";
+                    // imagediv.style.paddingLeft = "20px";
+                    // imagediv.style.paddingRight = "20px";
+                    // imagediv.style.paddingTop = "20px";
+                    imagediv.setAttribute('class', 'imagediv')
+                    // imagediv.style.borderRadius = "40%";
+                    // imagediv.style.marginLeft = "0px";
+                    var teacher_image = new Image("100%", "100%"); // width, height
+                    teacher_image.src = teachers[i]['image'];
+                    teacher_image.classList.add('circle')
+                    imagediv.appendChild(teacher_image)
+                    teachercard.appendChild(imagediv)
+
+                      var teacherinfo = document.createElement("H2")
+                      teacherinfo.setAttribute("class", "teachername")
+                      teacherinfo.innerHTML = teachers[i]['name'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = teachers[i]['yog'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = teachers[i]['description'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      if (teachers[i]['classes'].length > 0) {
+                      teacherinfo.innerHTML = "Teacher of the "
+                      for (var d = 0; d < teachers[i]['classes'].length; d++) {
+                        var class_name = teachers[i]['classes'][d]
+                        for (var w = 0; w < teachers[i]['classes'][d].indexOf(' '); w++) {
+                          class_name = class_name.replace(' ', "-");
+                        }
+                        teacherinfo.innerHTML += "<a href='http://signup.helmlearning.com?" + class_name + "' target='_blank' >" + teachers[i]['classes'][d] + "</a>, ";
+                      }
+                      teacherinfo.innerHTML = teacherinfo.innerHTML.substr(0, teacherinfo.innerHTML.length-2)
+                      teacherinfo.innerHTML += " class"
+                      if (teachers[i]['classes'].length > 1) teacherinfo.innerHTML += "es"
+                      teachercard.appendChild(teacherinfo)
+                      }
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = teachers[i]['role'];
+                      teachercard.appendChild(teacherinfo)
+
+                    document.getElementById("teacherrow_" + parseInt(i/numcols)).appendChild(teachercard)
+                }
+                
+                var managers = data['Managers'];
+                document.getElementById("managers").removeChild(document.getElementById("tobedeleted"))
+                jumpto.innerHTML += "<a href='#managers'>Managers</a>, "
+                for (i = 0; i < managers.length; i++) {
+                    if (i % numcols == 0) {
+                      var teacherrow = document.createElement("div")
+                      teacherrow.id = "managerrow_" + (i/numcols)
+                      teacherrow.setAttribute('class', "teacherrow")
+                      document.getElementById("managers").appendChild(teacherrow)
+                    }
+                    var teachercard = document.createElement("div")
+                    teachercard.setAttribute("class", "teachercard")
+                    // teachercard.innerHTML = teachers[i]['name'];
+                    
+                    var imagediv = document.createElement("div");
+                    // imagediv.style.maxWidth = imagesize + "px";
+                    // imagediv.style.float = "left";
+                    // imagediv.style.paddingLeft = "20px";
+                    // imagediv.style.paddingRight = "20px";
+                    // imagediv.style.paddingTop = "20px";
+                    imagediv.setAttribute('class', 'imagediv')
+                    // imagediv.style.borderRadius = "40%";
+                    // imagediv.style.marginLeft = "0px";
+                    var teacher_image = new Image("100%", "100%"); // width, height
+                    teacher_image.src = managers[i]['image'];
+                    teacher_image.classList.add('circle')
+                    imagediv.appendChild(teacher_image)
+                    teachercard.appendChild(imagediv)
+
+                      var teacherinfo = document.createElement("H2")
+                      teacherinfo.setAttribute("class", "teachername")
+                      teacherinfo.innerHTML = managers[i]['name'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = managers[i]['yog'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = managers[i]['description'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = managers[i]['role'];
+                      teachercard.appendChild(teacherinfo)
+
+                    document.getElementById("managerrow_" + parseInt(i/numcols)).appendChild(teachercard)
+                }
+            
+                var hackers = data['Developers'];
+                document.getElementById("developers").removeChild(document.getElementById("tobedeleted"))
+                jumpto.innerHTML += "<a href='#developers'>Developers</a>, "
+                for (i = 0; i < hackers.length; i++) {
+                    if (i % numcols == 0) {
+                      var teacherrow = document.createElement("div")
+                      teacherrow.id = "hackerrow_" + (i/numcols)
+                      teacherrow.setAttribute('class', "teacherrow")
+                      document.getElementById("developers").appendChild(teacherrow)
+                    }
+                    var teachercard = document.createElement("div")
+                    teachercard.setAttribute("class", "teachercard")
+                    // teachercard.innerHTML = teachers[i]['name'];
+                    
+                    var imagediv = document.createElement("div");
+                    // imagediv.style.maxWidth = imagesize + "px";
+                    // imagediv.style.float = "left";
+                    // imagediv.style.paddingLeft = "20px";
+                    // imagediv.style.paddingRight = "20px";
+                    // imagediv.style.paddingTop = "20px";
+                    imagediv.setAttribute('class', 'imagediv')
+                    // imagediv.style.borderRadius = "40%";
+                    // imagediv.style.marginLeft = "0px";
+                    var teacher_image = new Image("100%", "100%"); // width, height
+                    teacher_image.src = hackers[i]['image'];
+                    teacher_image.classList.add('circle')
+                    imagediv.appendChild(teacher_image)
+                    teachercard.appendChild(imagediv)
+
+                      var teacherinfo = document.createElement("H2")
+                      teacherinfo.setAttribute("class", "teachername")
+                      teacherinfo.innerHTML = hackers[i]['name'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = hackers[i]['yog'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = hackers[i]['description'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = hackers[i]['role'];
+                      teachercard.appendChild(teacherinfo)
+
+                    document.getElementById("hackerrow_" + parseInt(i/numcols)).appendChild(teachercard)
+                }
+
+                var speakers = data['Speakers'];
+                document.getElementById("speakers").removeChild(document.getElementById("tobedeleted"))
+                jumpto.innerHTML += "<a href='#speakers'>Speakers</a>, "
+                for (i = 0; i < speakers.length; i++) {
+                    if (i % numcols == 0) {
+                      var teacherrow = document.createElement("div")
+                      teacherrow.id = "speakerrow_" + (i/numcols)
+                      teacherrow.setAttribute('class', "teacherrow")
+                      document.getElementById("speakers").appendChild(teacherrow)
+                    }
+                    var teachercard = document.createElement("div")
+                    teachercard.setAttribute("class", "teachercard")
+                    // teachercard.innerHTML = teachers[i]['name'];
+                    
+                    var imagediv = document.createElement("div");
+                    // imagediv.style.maxWidth = imagesize + "px";
+                    // imagediv.style.float = "left";
+                    // imagediv.style.paddingLeft = "20px";
+                    // imagediv.style.paddingRight = "20px";
+                    // imagediv.style.paddingTop = "20px";
+                    imagediv.setAttribute('class', 'imagediv')
+                    // imagediv.style.borderRadius = "40%";
+                    // imagediv.style.marginLeft = "0px";
+                    var teacher_image = new Image("100%", "100%"); // width, height
+                    teacher_image.src = speakers[i]['image'];
+                    teacher_image.classList.add('circle')
+                    imagediv.appendChild(teacher_image)
+                    teachercard.appendChild(imagediv)
+
+                      var teacherinfo = document.createElement("H2")
+                      teacherinfo.setAttribute("class", "teachername")
+                      teacherinfo.innerHTML = speakers[i]['name'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = speakers[i]['yog'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = speakers[i]['description'];
+                      teachercard.appendChild(teacherinfo)
+
+                      var teacherinfo = document.createElement("P")
+                      teacherinfo.setAttribute("class", "teacherinfo")
+                      teacherinfo.innerHTML = speakers[i]['role'];
+                      teachercard.appendChild(teacherinfo)
+
+                    document.getElementById("speakerrow_" + parseInt(i/numcols)).appendChild(teachercard)
+                }
+                
+                // var helmclubmembers = data['HELM Club Members'];
+                // document.getElementById("helmclubmembers").removeChild(document.getElementById("tobedeleted"))
+                // jumpto.innerHTML += "<a href='#helmclubmembers'>HELM Club Members</a>, "
+                // for (i = 0; i < helmclubmembers.length; i++) {
+                //     if (i % numcols == 0) {
+                //       var teacherrow = document.createElement("div")
+                //       teacherrow.id = "helmclubmemberrow_" + (i/numcols)
+                //       teacherrow.setAttribute('class', "teacherrow")
+                //       document.getElementById("helmclubmembers").appendChild(teacherrow)
+                //     }
+                //     var teachercard = document.createElement("div")
+                //     teachercard.setAttribute("class", "teachercard")
+                //     // teachercard.innerHTML = teachers[i]['name'];
+                    
+                //     var imagediv = document.createElement("div");
+                //     // imagediv.style.maxWidth = imagesize + "px";
+                //     // imagediv.style.float = "left";
+                //     // imagediv.style.paddingLeft = "20px";
+                //     // imagediv.style.paddingRight = "20px";
+                //     // imagediv.style.paddingTop = "20px";
+                //     imagediv.setAttribute('class', 'imagediv')
+                //     // imagediv.style.borderRadius = "40%";
+                //     // imagediv.style.marginLeft = "0px";
+                //     var teacher_image = new Image("100%", "100%"); // width, height
+                //     teacher_image.src = helmclubmembers[i]['image'];
+                //     teacher_image.classList.add('circle')
+                //     imagediv.appendChild(teacher_image)
+                //     teachercard.appendChild(imagediv)
+
+                //       var teacherinfo = document.createElement("H2")
+                //       teacherinfo.setAttribute("class", "teachername")
+                //       teacherinfo.innerHTML = helmclubmembers[i]['name'];
+                //       teachercard.appendChild(teacherinfo)
+
+                //       var teacherinfo = document.createElement("P")
+                //       teacherinfo.setAttribute("class", "teacherinfo")
+                //       teacherinfo.innerHTML = helmclubmembers[i]['yog'];
+                //       teachercard.appendChild(teacherinfo)
+
+                //       var teacherinfo = document.createElement("P")
+                //       teacherinfo.setAttribute("class", "teacherinfo")
+                //       teacherinfo.innerHTML = helmclubmembers[i]['description'];
+                //       teachercard.appendChild(teacherinfo)
+
+                //       var teacherinfo = document.createElement("P")
+                //       teacherinfo.setAttribute("class", "teacherinfo")
+                //       teacherinfo.innerHTML = helmclubmembers[i]['role'];
+                //       teachercard.appendChild(teacherinfo)
+
+                //     document.getElementById("helmclubmemberrow_" + parseInt(i/numcols)).appendChild(teachercard)
+                // }
+            
+              }
+            request.send()
+          
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+
+          function gotopage(website) {
+            window.location.href = "https://" + website
+          }
+          function gotofile(website) {
+            window.location.href = website
+          }
+          function gotosuspage(website) {
+            window.location.href = "http://" + website
+          }
+          function showNavBarStaff() {
+            var x = document.getElementById("p3top");
+            if (x.className === "topnav") {
+              x.className += " responsive";
+            } else {
+              x.className = "topnav";
+            }
+          }
+      </script>
+
+
+
+</html>

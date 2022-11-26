@@ -1,0 +1,187 @@
+<!-- Vikram Anantha
+Aug 21 2021
+Remaking the Donations Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+<html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+
+        <title>Testinomials - HELM Learning</title>
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotofile('/')" class="p3topbutton">Home</button>
+            <button onclick="gotofile('our-team.html')" class="p3topbutton">Our Team</button>
+            <button onclick="gotofile('our-classes.html')" class="p3topbutton">Our Classes</button>
+            <a id='center-top-image-link' href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v2.png'></a>
+            <button onclick="gotofile('donations.html')" class="p3topbutton">Donations</button>
+            <button onclick="gotofile('contact-us.html')" class="p3topbutton">Contact Us</button>
+            <button onclick="gotopage('helmlearning.com/testimonials.html')" class="p3topbutton active">Testimonials</button>
+            
+        </div>
+        <div id="header">
+            <h1 id="section_headers" style="color:#fff">Testimonials & In The News</h1>
+        </div>
+
+        <div id="in-the-news">
+            <h1 id='header2' style="color:#5434ab">In the News</h1>
+            <h2 style="text-align:center;" id="tobedeleted">Scouring the Internet...</h2>
+        </div>
+
+        <div id='testimonials' class="homepage">
+            <h1 id='header2' style="color:#5434ab">Testimonials</h1>
+            <h2 id="tobedeleted">Asking around...</h2>
+        </div>
+        <div id="teacher-signup">
+          <div class='blingbling1'><h1 id="section_headers" style="color:#fff; font-size:max(30px,4vw);">Want to share your experience?</h1></div>
+          <div class='blingbling2'><button class='p3button' onclick="gotopage('docs.google.com/forms/d/e/1FAIpQLSfOBDz_5Wc_X_NWcT9VJaBgQzVZ-53vzOlFAC4b7fUZtgXoog/viewform?usp=sf_link')">Take me there!</button></div>
+        </div>
+
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2022 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+
+
+      </body>
+      
+      <script>
+
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/gettestimonialinfo';
+        const request = new XMLHttpRequest();
+        
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+          var numcols = 3;
+          var data = JSON.parse(this.response);
+          var news = data["News"]
+          document.getElementById("in-the-news").removeChild(document.getElementById("tobedeleted"))
+          document.getElementById("testimonials").removeChild(document.getElementById("tobedeleted"))
+          
+          for (var i = 0; i < news.length; i++) {
+            if (i % numcols == 0) {
+              var newsrow = document.createElement("div")
+              newsrow.id = "newsrow_" + (i/numcols)
+              newsrow.setAttribute('class', "teacherrow")
+              document.getElementById("in-the-news").appendChild(newsrow)
+            }
+            var newscard = document.createElement("div")
+            newscard.setAttribute("class", "teachercard")
+            var newscard2 = document.createElement("a")
+            newscard2.style = "color:#000";
+            newscard2.href = news[i]["Link"];
+            newscard2.target = "_blank"
+            title = document.createElement("h2")
+            title.style = "font-size:24px"
+            title.innerHTML = news[i]["Title"]
+            title.setAttribute("class", "teachername")
+            newscard2.appendChild(title)
+
+            p1 = document.createElement("p")
+            p1.style = "color:#444"
+            p1.innerHTML = news[i]["Author"]
+            p1.setAttribute("class", "teacherinfo")
+            newscard2.appendChild(p1)
+
+            p2 = document.createElement("p")
+            p2.style = "color:#444"
+            p2.innerHTML = "Click here to read the full article"
+            p2.setAttribute("class", "teacherinfo")
+            newscard2.appendChild(p2)
+
+            newscard.appendChild(newscard2)
+            document.getElementById("newsrow_" + parseInt(i/numcols)).appendChild(newscard)
+          }
+          var test = data["Testinomials"]
+          for (var i = 0; i < test.length; i++) {
+            var testcard = document.createElement("DIV")
+            testcard.setAttribute("class", "testimonial")
+
+            var testcontent = document.createElement("P")
+            testcontent.innerHTML = test[i]["Message"]
+            testcard.appendChild(testcontent)
+
+            var testcontent2 = document.createElement("P")
+            testcontent2.innerHTML = "-- " + test[i]["Person"]
+            testcard.appendChild(testcontent2)
+
+            document.getElementById("testimonials").appendChild(testcard)
+
+          }
+
+        }
+        request.send()
+
+
+        function capitalize(s) {
+          return s.toUpperCase()
+        }
+
+        function gotopage(website) {
+          window.location.href = "https://" + website
+        }
+        function gotofile(website) {
+          window.location.href = website
+        }
+        function gotosuspage(website) {
+          window.location.href = "http://" + website
+        }
+        function showNavBarStaff() {
+          var x = document.getElementById("p3top");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+
+        function popup(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+        textbox_div.style.transitionTimingFunction = "ease-out";
+        textbox_div.style.transition = "all 0.25s";
+        textbox_div.style.marginBottom = "20px";
+        textbox_div.style.marginTop = "0px";
+        textbox_div.style.marginLeft = "-3px";
+
+    }
+
+    function popdown(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "None";
+        textbox_div.style.marginBottom = "10px";
+        textbox_div.style.marginLeft = "0px";
+
+    }
+
+    function submit() {
+      var name = document.getElementById("customer_name").value
+      var email = document.getElementById("customer_email").value
+      var message = document.getElementById("customer_message").value
+    }
+      </script>
+
+
+</html>

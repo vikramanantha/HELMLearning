@@ -1,0 +1,1 @@
+ssh -L 3306:helmlearningdatabase-1.cnoqlueuri3g.us-east-1.rds.amazonaws.com:3306 -i /Users/vikramanantha/Downloads/DevKeyVikram.pem ec2-user@52.21.172.100

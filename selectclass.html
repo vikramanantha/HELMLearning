@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Teacher's Dashboard | Select Class</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="icon_smol.png"/>
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png' width=320px>
+            </a>
+            <div id='header_text' class="peasant">
+                <h1 id="header_signup"></h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="peasant" style="margin-bottom: 10px;">
+                <h2>Welcome teachers!</h2>
+                <h3 style="color: black; font-size: 14px;">Please choose your class from the list below to see the students that have signed up, as well as details about your class.</h3>
+            </div>
+            
+            
+        </div>
+
+
+
+      </body>
+      <script>
+          //var name = "Fun & Games with Python";
+          
+          the_class_name = document.getElementById("header_signup");
+          the_class_name.innerHTML = "Select your class";
+        
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/get_all_classes';
+            const request = new XMLHttpRequest();
+            
+            request.open('GET', url_a)
+            //var taking = new XMLHttpRequest();
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                for (i = 0; i < data.length; i++) {
+                    var class_button = document.createElement("BUTTON")
+                    class_button.innerHTML = data[i][1];
+                    class_button.setAttribute("onclick", "nextpage(this.innerHTML)");
+                    class_button.setAttribute("class", "class_button");
+                    document.getElementById("root").appendChild(class_button)
+                }
+            }
+            request.send()
+          
+          function nextpage(c) {
+              console.log(c)
+              for (var i = 0; i < c.indexOf(' '); i++) {
+                c = c.replace(' ', "-");
+              }
+              window.location.href = "verifyteacher.html?" + c
+          }
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+      </script>
+
+
+
+</html>

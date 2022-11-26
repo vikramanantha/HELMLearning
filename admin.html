@@ -1,0 +1,78 @@
+<!--Content-Type: text/html;--->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Admin</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="icon_smol.png"/>
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='logo.png' width=320px>
+            </a>
+            <div id='header_text' class="peasant">
+                <h1 id="header_signup">Admin Homepage</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="peasant" style="margin-bottom: 10px;">
+                <h2>Welcome teachers!</h2>
+                <h3 style="color: black; font-size: 14px;">Please choose your class from the list below to see the students that have signed up, as well as details about your class.</h3>
+            </div>
+            <button class='class_button' onclick='nextpage("schedule")'>Schedule</button>
+            <button class='class_button' onclick='nextpage("log")'>Log</button>
+            <button class='class_button' onclick='nextpage("students")'>Students</button>
+            <button class='class_button' onclick='nextpage("stats")'>Statistics</button>
+            
+        </div>
+
+
+
+      </body>
+      <script>
+            var ilysa = document.location.href
+            if (ilysa.includes('?') && ilysa.includes('=')) {
+                var token = ilysa.split('?')[1].split('=')[1]
+            } else {
+                window.location.href = "login.html"
+            }
+            
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/check_login?token=' + token;
+            const request = new XMLHttpRequest();
+            
+            request.open('GET', url_a)
+            //var taking = new XMLHttpRequest();
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                if (data['output'] == 0) {
+                    window.location.href = "login.html"
+                } 
+            }
+            request.send()
+          
+          function nextpage(c) {
+            var token = document.location.href.split('?')[1].split('=')[1]
+            console.log(c)
+            window.location.href = 'adminfiles/' + c + ".html?token=" + token
+          }
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+      </script>
+
+
+
+</html>

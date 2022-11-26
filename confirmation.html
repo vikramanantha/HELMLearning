@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Confirmation</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='logo.png', width=320px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup">Loading...</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <p id="tobedeleted">If this page takes too long to load, something might be wrong. Please contact <a href='helmlearning2020@gmail.com'>helmlearning2020@gmail.com</a> for assistance</p>
+            <h2 style="margin-top: 50px; margin-bottom: 50px;" id="thisisamerica"></h2>
+            <!-- <button style="width:100%;" onclick="toclasses()">Go Back to HELM Learning Website</button> -->
+        </div>
+        
+      </body>
+</html>
+<script>
+    var ilysa = document.location.href
+    var thistimeitis = ilysa.split('?')[1].split('&')[2].split("=")[1]
+    var class_name = ilysa.split('?')[1].split('&')[1].split("=")[1]
+    var fname = ilysa.split('?')[1].split('&')[0]
+    console.log("class_name: " + class_name)
+    console.log("fname: " + fname)
+    console.log("thistimeitis: " + thistimeitis)
+    if (thistimeitis == "feedback") {
+        document.getElementById("thisisamerica").innerHTML = "Your feedback has been successfully submitted"
+        itsallgood();
+    }
+    if (thistimeitis == "newsession") {
+        document.getElementById("thisisamerica").innerHTML = "Success! Your request has been sent to the Management team, and within the day you should get a confirmation email with the details of your new session!"
+        itsallgood();
+    }
+    if (thistimeitis == "signup") {
+        document.getElementById("thisisamerica").innerHTML = "Success! Your Signup Form has been sent to the HELM Learning Management Team, and you should have received a confirmation email to the email you provided. "
+        document.getElementById("thisisamerica").innerHTML += "If you didn't, please contact <a href='helmlearning2020@gmail.com'>helmlearning2020@gmail.com</a>."
+
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/train_alg';
+        const request = new XMLHttpRequest();
+          
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send()
+        itsallgood();
+    }
+    if (thistimeitis == "signup3stuckinatree") {
+        document.getElementById("thisisamerica").innerHTML = "Success! You should get 2 emails within the next couple of mins regarding details about your class."
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/signup_to_be_teach_3?name=' + class_name;
+        const request = new XMLHttpRequest();
+          
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send()
+        itsallgood();
+    }
+    if (thistimeitis == "signup3stuckinatreefale") {
+        document.getElementById("thisisamerica").innerHTML = "Oh no! It looks like you have already clicked this link before! This means your class is already on the website!"
+        itsallgood();
+    }
+    if (thistimeitis == "interest") {
+        // document.getElementById("thisisamerica").innerHTML = "Thank you for your interest! An email will been sent to you with the link to where you can fill out the interest form.<br><br>Generating link..."
+        document.getElementById("thisisamerica").innerHTML = "Generating link..."
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/send_interest_email?cache=' + class_name;
+        const request = new XMLHttpRequest();
+          
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            document.getElementById("thisisamerica").innerHTML = "Thank you for your interest!<br><br>An email has been sent to you with a link to complete the teacher signup form and create your class."
+            document.getElementById("thisisamerica").innerHTML += "<br><br> <a href='" + data[0] + "'>If you would like to create your class, here is the link.</a>"
+        }
+        request.send()
+        itsallgood();
+    }
+    if (thistimeitis == "fromsfl") {
+        document.getElementById("thisisamerica").innerHTML = "Generating link..."
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/send_sfl_email?email=' + fname + '&link=' + class_name;
+        const request = new XMLHttpRequest();
+        console.log(url_a);
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            if (data[0] == '1') {alert("Something went wrong :( -- Please contact helmlearning2020@gmail.com")}
+            else {
+                document.getElementById("thisisamerica").innerHTML = "<a target='_blank' href='" + data[0] + "'>Here is your save for later link</a><br><br>"
+                document.getElementById("thisisamerica").innerHTML += 'An email has been sent to you with the same link under the subject "' + data[1] + '", so you will be able to store it there.' 
+            }
+        }
+        request.send()
+        itsallgood();
+    }
+    if (thistimeitis == "unsubscribe") {
+        document.getElementById("thisisamerica").innerHTML = "Sorry to see you go! We hope you still enjoy our selection of HELM Learning classes at <a href='http://signup.helmlearning.com'>signup.helmlearning.com</a><br>Sorry for any inconvenience!"
+    }
+    function toclasses() {
+        window.location.href = "https://helmlearning.com"
+    }
+
+    function itsallgood() {
+        document.getElementById("header_signup").innerHTML = "Success!"
+        document.getElementById("root").removeChild(document.getElementById("tobedeleted"));
+    }
+</script>

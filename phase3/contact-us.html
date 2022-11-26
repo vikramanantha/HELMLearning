@@ -1,0 +1,165 @@
+<!-- Vikram Anantha
+Aug 21 2021
+Remaking the Donations Page
+HELM Learning - Phase 3 -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    
+        <title>Contact Us - HELM Learning</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="stylep3.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="icon" type="image/png" href="https://helm-logos.s3.amazonaws.com/helm-icon.png"/>
+      </head>
+
+      <body>
+        <!-- <a href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v1.png' width=200px></a> -->
+        <div id="p3top" class="topnav">
+            <a href="javascript:void(0);" class="icon" onclick="showNavBarStaff()">
+              <i class="fa fa-bars"></i>
+            </a>
+            <button onclick="gotofile('/')" class="p3topbutton">Home</button>
+            <button onclick="gotofile('our-team.html')" class="p3topbutton">Our Team</button>
+            <button onclick="gotofile('our-classes.html')" class="p3topbutton">Our Classes</button>
+            <a id='center-top-image-link' href="https://helmlearning.com"><img id='center-top-image' src='https://helm-logos.s3.amazonaws.com/helm-logo-v2.png'></a>
+            <button onclick="gotofile('donations.html')" class="p3topbutton">Donations</button>
+            <button onclick="gotopage('helmlearning.com/contact-us.html')" class="p3topbutton active">Contact Us</button>
+            <button onclick="gotofile('testimonials.html')" class="p3topbutton">Testimonials</button>
+            
+        </div>
+        <div id="header">
+            <h1 id="section_headers" style="color:#fff">Contact Us</h1>
+        </div>
+
+        <div id="connect-with-us" class="homepage">
+          <h1 id='header2' style="color:#5434ab">Connect With Us!</h1>
+          <div style="max-width:370px">
+            <button onclick="gotopage('facebook.com/helmlearning')" class="p3buttonsmol" style="background-color: #0077ff;border-radius: 20px;color:#fff;margin:20px 40px 20px 40px;width:fit-content;">Find us on Facebook here!</button>
+            <button onclick="gotopage('instagram.com/helmlearning')" class="p3buttonsmol" style="background-color: #ff00c8;border-radius: 20px;color:#fff;margin:20px 40px 20px 40px;width:fit-content;">Find us on Instagram here!</button>
+          </div>
+        </div>
+
+        <div id="contact-us" class="homepage">
+            <h1 id='header2' style="color:#5434ab">Contact Us!</h1>
+            <div class="homepage-row">
+                <div class="homepage-card twofer">
+                  <h2 style="font-size:24px;">Need to Reach Us?</h2>
+                  <div class='bippityboppity'>
+                    <div id="input_fields_customer_name" class="input_fields" class="peasant">
+                      <h2>What is your name?</h2>
+                      <input type="text" id="customer_name" onfocus="popup(id)" onblur="popdown(id)" placeholder='Your Name'
+                          required>
+                    </div>
+                    <div id="input_fields_customer_email" class="input_fields" class="peasant">
+                      <h2>What is your email?</h2>
+                      <input type="text" id="customer_email" onfocus="popup(id)" onblur="popdown(id)" placeholder='Your Email'
+                          required>
+                    </div>
+                    <div id="input_fields_customer_message" class="input_fields" class="peasant">
+                      <h2>What is your message?</h2>
+                      <textarea id="customer_message" onfocus="popup(id)" onblur="popdown(id)" placeholder="Your Message"></textarea>
+                    </div>
+                    <div id="submit" class="input_fields" class="peasant">
+                      <button id='submit_button' class='signupbutton' onclick="submit()">Send to HELM Learning</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="homepage-card twofer">
+                  <h2 style="font-size:24px;">HELM Learning</h2>
+                  <p>
+                    Call us at <a href='callto:7812818715'>+1(781)-281-8715</a><br>
+                    Or email us at <a href='mailto:helmlearning2020@gmail.com'>helmlearning2020@gmail.com</a>
+                  </p>
+                </div>
+                
+            </div>
+        </div>
+
+        <div id="footer">
+          <div class="footer-div">Copyright © 2022 Helm Learning - All Rights Reserved.</div>
+          <div class="footer-div"><strong style="font-size: 25px; margin-bottom: 5px;">HELM Learning</strong><br>Helping Everyone Learn More<br>Started in 2020</div>
+          <div class="footer-div">Created by Vikram Anantha</div>
+        </div>
+
+
+      </body>
+      
+      <script>
+        function capitalize(s) {
+          return s.toUpperCase()
+        }
+
+        function gotopage(website) {
+          window.location.href = "https://" + website
+        }
+        function gotofile(website) {
+          window.location.href = website
+        }
+        function gotosuspage(website) {
+          window.location.href = "http://" + website
+        }
+        function showNavBarStaff() {
+          var x = document.getElementById("p3top");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+
+        function popup(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+        textbox_div.style.transitionTimingFunction = "ease-out";
+        textbox_div.style.transition = "all 0.25s";
+        textbox_div.style.marginBottom = "20px";
+        textbox_div.style.marginTop = "0px";
+        textbox_div.style.marginLeft = "-3px";
+
+    }
+
+    function popdown(input_id) {
+        textbox = document.getElementById(input_id);
+        textbox_div = document.getElementById('input_fields_' + input_id);
+        textbox_div.style.boxShadow = "None";
+        textbox_div.style.marginBottom = "10px";
+        textbox_div.style.marginLeft = "0px";
+
+    }
+
+    function submit() {
+      var name = document.getElementById("customer_name").value
+      var email = document.getElementById("customer_email").value
+      var message = document.getElementById("customer_message").value
+      var name = name.split(' ').join('®')
+      var email = email.split(' ').join('®')
+      var message = message.split(' ').join('®')
+      document.getElementById("submit_button").innerHTML = "Sending..."
+
+      const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/contactusemail?name=' + name + '&email=' + email + '&message=' + message;
+      const request = new XMLHttpRequest();
+      
+      request.open('GET', url_a)
+      //var taking = new XMLHttpRequest();
+      request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      request.onload = function () {
+        var data = JSON.parse(this.response);
+        if (data["output"] == 1) {
+          document.getElementById("submit_button").innerHTML = "Send!"
+        }
+      }
+      request.send()
+    }
+      </script>
+
+
+</html>

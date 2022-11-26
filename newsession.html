@@ -1,0 +1,252 @@
+<!--Content-Type: text/html;--->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>HELM Teachers New Session Form</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="http://teachers.helmlearning.com">
+                <img src='logo.png', width=320px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup">Create a new session for your class!</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="input_fields" class="peasant" style="background-color: #76f7c1;">
+                <h2>Teach a New Session for Your Class!</h2>
+                <h3 style="color: black; font-size: 14px;">Use this form to create a new session for your class. Your request will be sent to the Management team, and within the day you should get a confirmation email with the details of your new session! </h3>
+                <h3 style="color: black; font-size: 14px;">One thing to note: If you are planning on teaching multiple sessions in the near future, please fill out this form multiple times, one for each session, however note on the website your class will only run one session at once.</h3>
+            </div>
+            <div id="instructions">
+                <h3> Please enter in information about your new session. Note: <strong>Only the teacher of the class should fill this out</strong> (* means required)</h3>                
+            </div>
+            <div id="input_fields_first_name" class="input_fields" class="peasant">
+                <h2>Your name *</h2>
+                <input type="text" id="first_name" onfocus="popup(id)" onblur="popdown(id)" placeholder="Please enter your (the teacher's) name" required>
+            </div>
+            <div id="input_fields_class" class="input_fields" class="peasant">
+                <h2>The class you teach *</h2>
+                <select id="class_dropdown" class="inputdropdown">
+                    <option value="default">---Select your class---</option>
+                </select>
+            </div>
+            <div id="input_fields_class_duration" class="input_fields" class="peasant">
+                <h2>How long your class is *</h2>
+                <input type="number" id="class_duration" onfocus="popup(id)" onblur="popdown(id)" placeholder="Duration of your class between 30 and 90 mins" required>
+            </div>
+            <div id="input_fields_class_duration" class="input_fields" class="peasant" style="background-color: #bdffdf;">
+                <h2>IMPORTANT: A couple things to note about your new session</h2>
+                <p> 
+                - Sessions during the school semester are 5 weeks long<br>
+                ----- Some weeks there will be no class due to school break ¬ <br>
+                ----- For example if your class runs through Thanksgiving week, your class will will still be 5 weeks long, but will skip that week<br><br>
+                - Sessions during school breaks and summer vacation will have weeklong sessions. School breaks include:<br>
+                ----- December break (week of Dec 25 and week of Jan 1)<br>
+                ----- February break (week of Feb 19)<br>
+                ----- April break (week of April 19)<br>
+                ----- Summer break (every week starting from the week of June 21 and ending the week of Sept 7)<br><br>
+                - When you are deciding on a new date for your session, make sure it is at least a week and a half in advance<br>
+                ----- This is so that you will have time to get more students<br><br>
+                - For timing, follow this set of guidelines:<br>
+                ----- During 5 week classes on Mon-Fri, your class must be between 4:30pm - 8:30pm EST<br>
+                ----- During 5 week classes on Sat-Sun or during weeklong classes, timing must be between 10am - 8:30pm EST
+                </p>
+            </div>
+            <div id="input_fields_new_class_time" class="input_fields" class="peasant">
+                <h2>Time Ranges for your class *</h2>
+                <p>Give at least 2 different time ranges in case one doesn't work out • In the format "hh:mm - hh:mm; hh:mm - hh:mm; ...", <br>All times in 24 hour time, EST</p>
+                <input type="text" id="new_class_time" onfocus="popup(id)" onblur="popdown(id)" placeholder='Example: "19:00 - 20:00; 11:30 - 12:30"' required>
+            </div>
+            <div id="input_fields_new_class_startdate" class="input_fields" class="peasant">
+                <h2>Start date for your class *</h2>
+                <p>In the format "yyyy-mm-dd"</p>
+                <input type="text" id="new_class_startdate" onfocus="popup(id)" onblur="popdown(id)" placeholder='Example: "2021-06-21"' required>
+            </div>
+            <div id="input_fields_new_class_enddate" class="input_fields" class="peasant">
+                <h2>End date for your class *</h2>
+                <p>In the format "yyyy-mm-dd"</p>
+                <input type="text" id="new_class_enddate" onfocus="popup(id)" onblur="popdown(id)" placeholder='Example: "2021-06-25"' required>
+            </div>
+
+            <div id="submit" class="input_fields" class="peasant">
+                <button onclick="submit()" style="width:80px;">Submit</button>
+            </div>
+            
+        </div>
+
+
+
+      </body>
+      <script>
+          
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/get_all_classes';
+        const request = new XMLHttpRequest();
+        
+        request.open('GET', url_a)
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+            var data = JSON.parse(this.response);
+            overarchingtheme = document.getElementById("class_dropdown")
+            for (i = 0; i < data.length; i++) {
+                var loption = document.createElement("option")
+                loption.innerHTML = data[i][1];
+                overarchingtheme.appendChild(loption)
+            }
+        }
+        request.send()  
+          
+        var ilysa = document.location.href
+        if (ilysa.includes("?")) {
+
+            var params = ilysa.split('?')[1].split('&')
+
+            const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/exchange_cache_newsession?' + ilysa.split('?')[1];
+            const request = new XMLHttpRequest();
+            request.open('GET', url_a)
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                console.log(data)
+                document.getElementById("first_name").setAttribute("value", data[0])
+                document.getElementById("class_dropdown").value = data[1]
+
+                document.getElementById("class_duration").setAttribute("value", data[2])
+                document.getElementById("new_class_time").setAttribute("value", data[3])
+                document.getElementById("new_class_startdate").setAttribute("value", data[4])
+                document.getElementById("new_class_enddate").setAttribute("value", data[5])
+            }
+            request.send()
+            // document.getElementById("first_name").setAttribute("value", params[0])
+            // document.getElementById("class_dropdown").setAttribute("value", params[1])
+            // document.getElementById("class_duration").setAttribute("value", params[2])
+            // document.getElementById("new_class_time").setAttribute("value", params[3])
+            // document.getElementById("new_class_startdate").setAttribute("value", params[4])
+            // document.getElementById("new_class_enddate").setAttribute("value", params[5])
+
+        }
+
+
+        function popup(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+            textbox_div.style.transitionTimingFunction = "ease-out";
+            textbox_div.style.transition = "all 0.25s";
+            textbox_div.style.marginBottom = "20px";
+            textbox_div.style.marginTop = "0px";
+            textbox_div.style.marginLeft = "-3px";
+              
+          }
+
+        function popdown(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "None";
+            textbox_div.style.marginBottom = "10px";
+            textbox_div.style.marginLeft = "0px";
+
+          }
+
+        function submit() {
+        //GET DA VARS
+            fname = document.getElementById("first_name").value;
+            classname = document.getElementById("class_dropdown").value;
+            class_duration = document.getElementById("class_duration").value;
+            new_class_time = document.getElementById("new_class_time").value;
+            new_class_startdate = document.getElementById("new_class_startdate").value;
+            new_class_enddate = document.getElementById("new_class_enddate").value;
+
+        //MAKE SURE PEEPS DO DA WORK
+            if (fname == '') {
+                alert("Please enter your name")
+                document.getElementById("first_name").style.borderColor = "red"
+                return;
+                } else {document.getElementById("first_name").style.borderColor = ""}
+            if (classname == '' || classname == "default") {
+                alert("Please enter your class")
+                document.getElementById("class_dropdown").style.borderColor = "red"
+                return;
+                } else {document.getElementById("class_dropdown").style.borderColor = ""}
+            if (class_duration == '') {
+                alert("Please enter your class duration")
+                document.getElementById("class_duration").style.borderColor = "red"
+                return;
+                } else {document.getElementById("class_duration").style.borderColor = ""}
+            if (new_class_time == '') {
+                alert("Please enter your new class time(s)")
+                document.getElementById("new_class_time").style.borderColor = "red"
+                return;
+                } else {document.getElementById("new_class_time").style.borderColor = ""}
+            if (new_class_startdate == '') {
+                alert("Please enter your new class start time")
+                document.getElementById("new_class_startdate").style.borderColor = "red"
+                return;
+                } else {document.getElementById("new_class_startdate").style.borderColor = ""}
+            if (new_class_enddate == '') {
+                alert("Please enter your new class end time")
+                document.getElementById("new_class_enddate").style.borderColor = "red"
+                return;
+                } else {document.getElementById("new_class_enddate").style.borderColor = ""}
+
+        //DASH IT THROUGH
+            for (var i = 0; i < fname.indexOf(' '); i++) {
+                fname = fname.replace(' ', "•");
+            }
+            for (var i = 0; i < classname.indexOf(' '); i++) {
+                classname = classname.replace(' ', "•");
+            }
+            for (var i = 0; i < class_duration.indexOf(' '); i++) {
+                class_duration = class_duration.replace(' ', "•");
+            }
+            for (var i = 0; i < new_class_time.indexOf(' '); i++) {
+                new_class_time = new_class_time.replace(' ', "•");
+            }
+            for (var i = 0; i < new_class_startdate.indexOf(' '); i++) {
+                new_class_startdate = new_class_startdate.replace(' ', "•");
+            }
+            for (var i = 0; i < new_class_enddate.indexOf(' '); i++) {
+                new_class_enddate = new_class_enddate.replace(' ', "•");
+            }
+            var whichwich 
+            if (ilysa.includes("?")) {var whichwich = "newsession_2"} else {var whichwich = "newsession_1"}
+            console.log('https://signup.helmlearning.com:5000/api/v1/resources/' + whichwich + '?fname=' + fname + '&classname=' + classname + '&class_duration=' + class_duration + '&new_class_time=' + new_class_time + '&new_class_startdate=' + new_class_startdate + '&new_class_enddate=' + new_class_enddate)
+            const url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/' + whichwich + '?fname=' + fname + '&classname=' + classname + '&class_duration=' + class_duration + '&new_class_time=' + new_class_time + '&new_class_startdate=' + new_class_startdate + '&new_class_enddate=' + new_class_enddate;
+            const request = new XMLHttpRequest();
+            request.open('GET', url_b)
+            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            request.onload = function () {
+                var data = JSON.parse(this.response);
+                if (data[0] == "0") {
+                    window.location.href = 'confirmation.html?' + fname + '&class=' + name + '&thistimeitis=newsession';
+                } else if (data[0] == "1") {
+                    alert('Please enter your new class time(s) in the format "hh:mm - hh:mm; hh:mm - ..."')
+                    document.getElementById("new_class_time").style.borderColor = "red"
+                    return;
+                } else if (data[0] == "2") {
+                    alert('Please enter your new class start date / end date in the format "yyyy-mm-dd"')
+                    document.getElementById("new_class_startdate").style.borderColor = "red"
+                    document.getElementById("new_class_enddate").style.borderColor = "red"
+                    return;
+                }
+            }
+            request.send()
+
+        }
+      </script>
+
+
+
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HELM Signup | Sign up Confirmation</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+      <div id='head'>
+        <a href="https://helmlearning.com">
+            <img src='logo.png', width=325px>
+        </a>
+        <div id='header_text'>
+            <h1 id='header_signup'>Processing...</h1>
+        </div>
+      </div>
+    <div id="root">
+        <div id="info" class="peasant info_page_4">
+            <p id='welcome'></p>
+            <p id='info_name'></p>
+            <p id='info_description'></p>
+            <p id='info_teacher'></p>
+            <p id='info_time'></p>
+            <p id='info_week'></p>
+            <div>
+                <p style="margin-bottom: 5px;" id='info_zoom'></p>
+                <div id="div_for_copying_zoom_button" style="margin-bottom: 10px;margin-left:-3px">
+                    <button id="button_for_copying_zoom" onclick="copy_zoom_link()">Copy Zoom Link</button>
+                </div>
+                <p style="font-size:10px;color:#6e6e6e">All information on this page has been sent in an email to you.</p>
+            </div>
+        </div>
+        <div id="recoclasses" class="peasant info_page_4">
+          <h1 style='font-size:40px; margin-bottom: 1px;'>Next Classes for <i>You</i></h1>
+          <p style='font-size:10px; margin-bottom:15px; text-align:center;'>Our Award Winning Recommendation Algorithm will decide what it thinks you should take next</p>
+          <p id="to_be_deleted" style='text-align: center'>Finding which class is best for you...</p>
+        </div>
+        <!-- <button style="width:100%" onclick="go_to_classes()">Sign up for more classes!</button> -->
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+
+
+        // DETAIL SHOWING //
+
+
+
+        var ilysa = document.location.href
+        var id = ilysa.split('?')[1].split('&')[0]
+        var name = ilysa.split('?')[1].split('&')[1].split('=')[1];
+        console.log(name)
+        var class_name = name.toUpperCase()
+        for (i = 0; i < name.indexOf('-'); i++) {
+          class_name = class_name.replace('-', " ");
+        }
+        //var name = "Fun & Games with Python";
+        var the_class_name = document.getElementById("header_signup");
+        the_class_name.innerHTML = "Sign up for the " + class_name + ' class';
+        const get_id = new XMLHttpRequest();
+        get_id.open('GET', "https://signup.helmlearning.com:5000/api/v1/resources/get_id?fname=__&email__&id=" + id)
+        get_id.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        get_id.onload = function () {
+          var data = JSON.parse(this.response);
+          var fname = data['Student_fname']
+          for (i = 0; i < fname.indexOf('$'); i++) {
+            fname = fname.replace('$', " ");
+          }
+          var email = data['Student_email']
+          console.log(fname);
+          console.log(email);
+          document.getElementById('welcome').innerHTML = 'Welcome to HELM, ' + fname + '<br>You are now signed up for this class. Here are some details about this class:';
+        }
+        get_id.send()
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/page4-receive?class=' + name;
+        //const url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/page2-receive?class=' + name;
+        const request = new XMLHttpRequest();
+        
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+          
+          var data = JSON.parse(this.response);
+          var le_class_name = data["Name"];
+          console.log(name)
+          var description = data["Description"];
+          var teacher = data["Teacher"];
+          var email = data["Email"];
+          var time = data["Time"];
+          var week = data["Week"];
+          var zoom = data["Zoom"]
+          // for (var i = 0; i < fname.indexOf('$'); i++) {
+          //   fname = fname.replace('$', " ");
+          //   }
+          document.getElementById('header_signup').innerHTML = 'Thank you for signing up!';
+          // document.getElementById('welcome').innerHTML = 'Welcome to HELM, ' + fname + '<br>You are now signed up for this class. Here are some details about this class:';
+          document.getElementById('info_name').innerHTML = '<i>Class Name:</i> ' + le_class_name;
+          // document.getElementById('info_description').innerHTML = '<i>Description:</i> ' + description;
+          document.getElementById('info_teacher').innerHTML = "<i>Teacher:</i> " + teacher + ' (<a href="mailto:' + email + '">' + email + '</a>)';
+          if (week == "TBD") {
+            week = "No Session is currently scheduled"
+            time = "No Session is currently scheduled"
+            // document.getElementById('info_time').innerHTML = '<i>Class Time:</i> ' + time;
+            document.getElementById('info_week').innerHTML = "No Session is currently scheduled";
+          } else {
+            time += " EST"
+            document.getElementById('info_time').innerHTML = '<i>Class Time:</i> ' + time;
+            document.getElementById('info_week').innerHTML = '<i>Dates:</i> ' + week;;
+          }
+          
+          if (zoom != "TBD") {
+            document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> <a href=" + zoom + ">Click Here to Join Class!</a>";
+          } else {
+            document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> TBD";
+            document.getElementById('div_for_copying_zoom_button').removeChild(document.getElementById('button_for_copying_zoom'))
+            console.log(">>>>>>" + document.getElementById('div_for_copying_zoom_button').childNodes)
+          }
+        }
+        request.send()
+
+
+        
+        // EMAIL SENDING //
+
+
+
+        var email_url = 'https://signup.helmlearning.com:5000/api/v1/resources/sendemail?class=' + name + '&id=' + id;
+        const email_request = new XMLHttpRequest();
+        email_request.open('GET', email_url)
+        email_request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        email_request.onload = function () {
+          var data = JSON.parse(this.response);
+          var to_change = data['output'];
+          var su_success = data['su_success']
+          if (to_change == 1 || to_change == '1') {
+            document.getElementById('welcome').innerHTML = 'Welcome to HELM, ' + fname + '!<br>You are now on the waitlist for this class';
+            document.getElementById('info_zoom').innerHTML = "<i>Zoom Link:</i> TBD";
+            document.getElementById('info_time').innerHTML = "<i>Class Time:</i> TBD";
+            document.getElementById('info_week').innerHTML = "<i>Dates:</i> TBD";
+          }
+          console.log(to_change)
+          if (su_success == 1 || su_success == '1') {
+            alert("You have already signed up for this class within the last 5 days. Your sign up has been added into the database!")
+          }
+        }
+        email_request.send()
+        //name = document.createElement("p");
+        //name.innerHTML = "Name: " + name;
+        //document.body.appendChild(name);
+
+
+
+        // RECOMMENDATION ALG //
+
+
+
+        var reco_url = 'https://signup.helmlearning.com:5000/api/v1/resources/reco?class=' + name + '&id=' + id;
+        const reco_request = new XMLHttpRequest();
+        reco_request.open('GET', reco_url)
+        reco_request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        reco_request.onload = function () {
+          var data = JSON.parse(this.response);
+          console.log(data)
+          // var data = [{"Name": "Python", "Description": "Sign up for the python class using the button to the left."}]
+          document.getElementById("recoclasses").removeChild(document.getElementById("to_be_deleted"))
+
+          for (var i = 0; i < data.length; i++) {
+            console.log(i)
+            console.log(data[i])
+            var class_name = data[i][0];
+            var class_descrip = data[i][1];
+            console.log(class_name)
+                var place_for_class_name_reco = document.createElement("p");
+                place_for_class_name_reco.innerHTML = class_name;
+                place_for_class_name_reco.setAttribute("id", "class_name")
+                // console.log(">>> place_for_class_name_reco.id = " + place_for_class_name_reco.id)
+                
+                var button_to_see_more_details = document.createElement("button");
+                button_to_see_more_details.innerHTML = "View more details";
+                button_to_see_more_details.style = "width: 100%";
+                var new_class_name_that_is_used_onces_with_dashes = class_name
+                console.log("1. " + new_class_name_that_is_used_onces_with_dashes)
+                for (j = 0; j < class_name.indexOf(' '); j++) {
+                  new_class_name_that_is_used_onces_with_dashes = new_class_name_that_is_used_onces_with_dashes.replace(' ', "-");
+                }
+                console.log("2. " + class_name)
+                button_to_see_more_details.setAttribute("class", "" + new_class_name_that_is_used_onces_with_dashes + " " + (i+1))
+                button_to_see_more_details.setAttribute("onclick", "view_class(this.classList[0], this.classList[1])");
+                // console.log(button_to_see_more_details.classList[0])
+                console.log(button_to_see_more_details.classList)
+              var div_on_the_left_side = document.createElement("div");
+              div_on_the_left_side.style = "width: 45%; float: left; margin-right: 5px;";
+              div_on_the_left_side.appendChild(place_for_class_name_reco);
+              div_on_the_left_side.appendChild(button_to_see_more_details);
+
+                var description_on_the_right = document.createElement("p");
+                description_on_the_right.innerHTML = class_descrip;
+                description_on_the_right.setAttribute("id", "info_description");
+                description_on_the_right.style = "word-wrap: break-word"
+              
+              var div_on_the_right_side = document.createElement("div")
+              div_on_the_right_side.style = "margin-left: 50%; margin-right:5px;";
+              div_on_the_right_side.appendChild(description_on_the_right)
+            
+            var big_div_for_everything = document.createElement("div")
+            big_div_for_everything.setAttribute("id", "next_class")
+            big_div_for_everything.setAttribute("class", "next_class peasant info_page_4")
+            big_div_for_everything.style = "height: 140px";
+            // Just a btw, how long the description is is set in backend.run_reco(), where it is set to be about 150 characters
+            big_div_for_everything.appendChild(div_on_the_left_side);
+            big_div_for_everything.appendChild(div_on_the_right_side);
+
+            // document.getElementById("recoclasses").innerHTML = "<h1 style='font-size:40px; margin-bottom: 20px;'>Next Classes for <i>You</i></h1>"
+            
+            document.getElementById("recoclasses").append(big_div_for_everything)
+          
+          // console.log(document.getElementById("recoclasses").innerHTML)
+          }
+
+        }
+        reco_request.send()
+
+
+
+        // FUNCTIONS //
+
+
+
+        function copy_zoom_link() {
+            var dummy = document.createElement("textarea");
+            // to avoid breaking orgain page when copying more words
+            // cant copy when adding below this code
+            // dummy.style.display = 'none'
+            document.body.appendChild(dummy);
+            var zoom_link = document.getElementById('info_zoom').innerHTML.replace("<i>Zoom Link:</i> ", "");
+            if (zoom_link != "TBD"){
+              zoom_link = zoom_link.replace('<a href="', "");
+              zoom_link = zoom_link.replace('">Click Here to Join Class!</a>', "");
+            }
+
+            //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+            dummy.value = zoom_link;
+            console.log(zoom_link)
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            if (zoom_link == "TBD") {
+              alert("Nothing to be copied")
+            } else {
+              alert("Copied!")
+            }
+        }
+
+        function go_to_classes() {
+            window.location.href = 'https://helmlearning.com/our-classes';
+        }
+
+        function view_class(class_name, ranking) {
+          console.log(ranking)
+          var url = document.location.href
+          var id = url.split('?')[1].split('&')[0]
+          const request2 = new XMLHttpRequest();
+          request2.open('GET', 'https://signup.helmlearning.com:5000/api/v1/resources/page4-data?class=' + class_name + '&id=' + id + '&ranking=' + ranking)
+          //var taking = new XMLHttpRequest();
+          request2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          request2.onload = function () {}
+          request2.send()
+          alert("You are about to view the details for the " + class_name + " class")
+          
+          window.location.href = 'http://signup.helmlearning.com?' + class_name + "&" + id
+        }
+
+    </script>
+  </body>
+</html>

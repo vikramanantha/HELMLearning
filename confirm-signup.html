@@ -1,0 +1,95 @@
+<!--
+Vikram Anantha
+Sept 16 2021
+Nayachen Movement
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Terms & Conditions</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png', width=320px>
+            </a>
+            <div id='header_text'>
+                <h1 id="header_signup">Terms & Conditions</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <p>If you are 13 years or younger, you must have an adult guardian present to check the terms and conditions</p>
+            <h2>Please read the following:</h2>
+            <div id="input_fields_day_dropdown" class="input_fields" class="peasant" style="padding-left: 10px"></div>
+            <div style='padding-bottom: 10px;'>
+                <input type="checkbox" id="resp_1" value="resp_1" class="checkcheck">
+                <label for="resp_1">I agree with the above terms and conditions</label><br>
+            </div>
+            <p>If there are any questions / concerns with this, please email <a href='mailto:helmlearning2020@gmail.com'>helmlearning2020@gmail.com</a></p>
+            <p>For more details on Child Privacy and Safety, you can visit <a href='https://www.ftc.gov/tips-advice/business-center/guidance/complying-coppa-frequently-asked-questions-0'>here</a>.</p>
+            <button style="width:100%;" onclick="submit()">Submit & Confirm</button>
+        </div>
+        
+      </body>
+</html>
+<script>
+    
+    if (!document.location.href.includes("?"))  window.location.href = "http://signup.helmlearning.com"
+    var which = document.location.href.split('?')[1].split('&')[2];
+    if (which == 'async') {
+        var iundarr = [
+        "Please know that HELM Learning wants to keep track of who has acess to the materials as some files contain images / recordings of student's faces",
+        "I understand that I will not share the folder to anyone, and that anyone who wants access to the folder can request access at <a href='helmlearning.com'>helmlearning.com</a>",
+        ]
+    } else {
+        var iundarr = [
+        "I understand that this class will be recorded and may be be published to <a href='https://helmlearning.com'>helmlearning.com</a>",
+        "I understand that I will not share personal details or information such as address, email, phone number, etc. during recording",
+        "I understand that I will turn off the camera if I do not want my student's face to be recorded",
+        "I understand that I will use text chat instead of voice if I do not want my student's voice to be recorded",
+        ]
+    }
+    var lediv = document.getElementById("input_fields_day_dropdown")
+        var lelist = document.createElement("UL")
+
+        for (var i = 0; i < iundarr.length; i++) {
+            var lenode = document.createElement("LI")
+            lenode.style = "padding-bottom:10px"
+            lenode.innerHTML = iundarr[i]
+            lelist.appendChild(lenode)
+        }
+        lediv.appendChild(lelist)
+    var ilysa = document.location.href.split("?")[1]
+    
+    function submit() {
+        
+        
+        var numq = 1;
+        var continu = true;
+        
+        var params = ilysa.split('&')
+
+        for (var i = 1; i <= numq; i++) {
+            if (!document.getElementById("resp_" + i).checked) continu = false;
+        }
+        if (continu) {
+            window.location.href = "page4.html?" + ilysa;
+        } else {
+            alert("Please check all boxes to continue. \nIf you are unable to agree with any statements, contact HELM Learning.")
+            return;
+        }
+
+        
+    }
+</script>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>HELM Signup | Class Details</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+      <div id='head'>
+        <a href="https://helmlearning.com">
+            <img src='https://helm-logos.s3.amazonaws.com/helm-logo-v2-1.png', width=320px>
+        </a>
+        <div id='header_text'>
+            <h1 id='header_signup'>Loading...</h1>
+        </div>
+      </div>
+    <div id="root">
+        <!-- <div id="info" class="peasant info_page_4">
+            <p id='info_name'></p>
+            <p id='info_description'></p>
+        </div> -->
+        <!-- <button style="width:100%" onclick="signup()">SIGN UP FOR THIS CLASS HERE</button> -->
+        <!-- <div id="teachers" class="peasant info_page_4">
+          <p id='welcome_teacher' class='welcome' style="margin-bottom: 5px;"></p>
+        </div> -->
+    </div>
+    <script src="scripts.js"></script>
+    <script>
+        var url = document.location.href
+        
+        if (url.indexOf('_') > 0) {
+          if (url.indexOf('&') > 0) {
+            var name = url.split('?')[1].split('=')[1].split('_')[0];
+            var which = url.split('?')[1].split('_')[1].split('&')[0];
+            id = which.split('&')[1]
+          } else {
+            var name = url.split('?')[1].split('=')[1].split('_')[0];
+            var which = url.split('?')[1].split('_')[1];
+            var id = null
+          }
+          
+        } else {
+          var name = url.split('?')[1].split('=')[1];
+          var which = ""
+          var id = null
+          if (url.indexOf('&') > 0) {
+            id = name.split('&')[1]
+            name = name.split('&')[0]
+          }
+        }
+        
+        console.log(id)
+        var class_name = name.toUpperCase()
+        for (var i = 0; i < name.indexOf('-'); i++) {
+          class_name = class_name.replace('-', " ");
+        }
+        document.getElementById('header_signup').innerHTML = class_name + ' <br>Class Details';
+
+        const url_b = 'https://signup.helmlearning.com:5000/api/v1/resources/get_teacher_info?classes=' + name;
+        const request2 = new XMLHttpRequest();
+        var imagesize = 150;
+        request2.open('GET', url_b)
+        //var taking = new XMLHttpRequest();
+        request2.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request2.onload = function () {
+          teacher_div = document.createElement("DIV")
+          teacher_div.id = 'teachers'
+          teacher_div.setAttribute("class", "peasant info_page_4")
+          welcome_teacher = document.createElement("P")
+          welcome_teacher.setAttribute('class', 'welcome')
+          welcome_teacher.id = 'welcome_teacher'
+          welcome_teacher.style="margin-bottom: 5px"
+          teacher_div.appendChild(welcome_teacher)
+          document.getElementById('root').appendChild(teacher_div)
+
+
+          var data = JSON.parse(this.response);
+          console.log(data)
+          if (data.length == 0) {
+            document.getElementById('welcome_teacher').innerHTML = "Hmm. There's no teacher for this class.."
+            return;
+          } else {
+            document.getElementById('welcome_teacher').innerHTML = "More info about the teacher of this class"
+          }
+          for (var i = 0; i < data.length; i++) {
+            var bigdiv = document.createElement("div");
+            var imagediv = document.createElement("div");
+            imagediv.style.width = imagesize + "px";
+            imagediv.style.float = "left";
+            imagediv.style.paddingLeft = "20px";
+            imagediv.style.paddingRight = "20px";
+            imagediv.style.paddingTop = "20px";
+            imagediv.style.borderRadius = "40%";
+            // imagediv.style.marginLeft = "0px";
+            var teacher_image = new Image(imagesize, imagesize); // width, height
+            teacher_image.src = data[i]['image'];
+            teacher_image.classList.add('circle')
+            imagediv.appendChild(teacher_image)
+            bigdiv.appendChild(imagediv)
+            // doppelimagediv.style.width = 350-imagesize + "px";
+            // doppelimagediv.style.float = "right";
+            var teacher_name = document.createElement("H2")
+            teacher_name.innerHTML = data[i]['name']
+            bigdiv.appendChild(teacher_name)
+            
+
+            var teacher_yog = document.createElement("P")
+            teacher_yog.innerHTML = data[i]['yog'] + "<br>" + '<a href="mailto:' + data[i]['email'] + '">' + data[i]['email'] + '</a>'
+            bigdiv.appendChild(teacher_yog)
+
+            var teacher_desc = document.createElement("P")
+            teacher_desc.innerHTML = data[i]['description']
+            bigdiv.appendChild(teacher_desc)
+            if (i != data.length-1) {
+              bigdiv.style.paddingBottom = "10px";
+            }
+            document.getElementById("teachers").appendChild(bigdiv)
+          }
+        }
+        request2.send();
+
+
+        // const url_a = 'http://0.0.0.0:5000/api/v1/resources/page4-receive-v2?class=' + name;
+        const url_a = 'https://signup.helmlearning.com:5000/api/v1/resources/page4-receive-v2?class=' + name + '&which=' + which;
+        const request = new XMLHttpRequest();
+
+
+        request.open('GET', url_a)
+        //var taking = new XMLHttpRequest();
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.onload = function () {
+          
+          var data = JSON.parse(this.response);
+          console.log(data)
+          if (data['is_real'] == "false") {
+            document.getElementById('header_signup').innerHTML = 'This class does not exist (for now at least)';
+            return null
+          }
+          
+          sdiv = document.createElement("DIV")
+          sdiv.id = "syncinfo";
+          sdiv.setAttribute("class", "peasant info_page_4");
+            var title = document.createElement("P")
+            title.setAttribute("class", "welcome")
+            title.innerHTML = "More information about this class"
+            title.id = "class_info_title"
+            var lename = document.createElement("P")
+            lename.id = "info_name"
+            lename.innerHTML = data["Sync"]["Name"]
+
+            var ledesc = document.createElement("P")
+            ledesc.id = "info_description"
+            ledesc.innerHTML = data["Sync"]["Le rest"]
+            sdiv.appendChild(title)
+            sdiv.appendChild(lename)
+            sdiv.appendChild(ledesc)
+
+          document.getElementById('root').insertBefore(sdiv, document.getElementById("teachers"))
+          var show = data['show'];
+
+          console.log("show: " + show)
+          console.log("which: " + which)
+          console.log("syncshow: " + data["Sync"]["show"])
+          console.log("asyncshow: " + data["Async"]["show"])
+
+          if (show == "signup") {
+            // var ssignup = document.createElement("BUTTON")
+            // ssignup.style = "width:100%"
+            // ssignup.setAttribute("onclick", "signup('signup')")
+            // ssignup.innerHTML = "SIGN UP FOR THIS CLASS HERE"
+            // document.getElementById('root').appendChild(ssignup)
+
+            var async_info = document.createElement("P");
+            async_info.setAttribute("class", "welcome");
+            async_info.innerHTML = "Join this class!"
+            var async_info_d = document.createElement("P");
+            async_info_d.id = "info_description";
+            async_info_d.innerHTML = "Click the button below to sign up for this class! You will receive an email with information about the class (ie. when it starts, zoom link, etc)"
+            asyncc = document.createElement("DIV");
+            asyncc.id = "asyncinfo"
+            asyncc.setAttribute("class", "peasant info_page_4");
+
+            asyncc.appendChild(async_info)
+            asyncc.appendChild(async_info_d)
+
+            document.getElementById('root').insertBefore(asyncc, document.getElementById("syncinfo"))
+            // document.getElementById('root').appendChild(asyncc)
+            // document.getElementById('root').appendChild(ssignup)
+            
+
+            // document.getElementById("info_description").innerHTML += data["Sync"]["syncsync"]
+            var ssignup = document.createElement("BUTTON")
+            ssignup.style = "width:100%"
+            ssignup.setAttribute("onclick", "signup('signup')")
+            ssignup.innerHTML = "SIGN UP FOR THIS CLASS HERE"
+            document.getElementById('root').appendChild(ssignup)
+
+            asyncc.appendChild(ssignup)
+          } else if (show == "async") {
+            // document.getElementById("info_description").innerHTML += "<br>---<br>You can get access to a Google Drive folder with class materials for this course below<br>for FREE"
+            var async_info = document.createElement("P");
+            async_info.setAttribute("class", "welcome");
+            async_info.innerHTML = "Our New Free Downloadable Classes"
+            var async_info_d = document.createElement("P");
+            async_info_d.id = "info_description";
+            async_info_d.innerHTML = "By clicking the button below, you will get access to a Google Drive folder with class materials for this course <i><strong>for FREE</strong></i>."
+            var asyncc = document.createElement("DIV");
+            asyncc.id = "asyncinfo"
+            asyncc.setAttribute("class", "peasant info_page_4");
+            
+            ssignup = document.createElement("BUTTON")
+            ssignup.style = "width:100%"
+            ssignup.setAttribute("onclick", "signup('async')")
+            ssignup.innerHTML = "RECEIVE ACCESS TO CLASS MATERIAL HERE"
+            console.log(data["Async"]["show"])
+
+            // document.getElementById('syncinfo').appendChild(async_info)
+            // document.getElementById('syncinfo').appendChild(async_info_d)
+
+            asyncc.appendChild(async_info)
+            asyncc.appendChild(async_info_d)
+
+            document.getElementById('root').insertBefore(asyncc, document.getElementById("syncinfo"))
+            // document.getElementById('root').appendChild(asyncc)
+            // document.getElementById('root').appendChild(ssignup)
+            asyncc.appendChild(ssignup)
+            
+          } else {
+
+            var async_info = document.createElement("P");
+            async_info.setAttribute("class", "welcome");
+            async_info.innerHTML = "Join the Class Waitlist!"
+            var async_info_d = document.createElement("P");
+            async_info_d.id = "info_description";
+            async_info_d.innerHTML = "This class is not running right now. However when a session does start / if the class releases downloadable material, we will update you."
+            var asyncc = document.createElement("DIV");
+            asyncc.id = "asyncinfo"
+            asyncc.setAttribute("class", "peasant info_page_4");
+
+            asyncc.appendChild(async_info)
+            asyncc.appendChild(async_info_d)
+
+            document.getElementById('root').insertBefore(asyncc, document.getElementById("syncinfo"))
+            // document.getElementById('root').appendChild(asyncc)
+            // document.getElementById('root').appendChild(ssignup)
+            
+
+            // document.getElementById("info_description").innerHTML += data["Sync"]["syncsync"]
+            var ssignup = document.createElement("BUTTON")
+            ssignup.style = "width:100%"
+            ssignup.setAttribute("onclick", "signup('waitlist')")
+            ssignup.innerHTML = "GET NOTIFIED WHEN THIS CLASS STARTS HERE"
+            document.getElementById('root').appendChild(ssignup)
+
+            asyncc.appendChild(ssignup)
+          }
+          
+          // MAKE IT SO THAT IT WILL SAY "JOIN THE WAITLIST"
+          // it will email the person when the class has a session or async material comes
+          // wont store as a signup, they have to confirm after the signup
+
+          // if (data["Async"]["show"]) {
+          //   var adiv = document.createElement("DIV")
+          //   adiv.id = "asyncinfo";
+          //   adiv.setAttribute("class", "peasant info_page_4");
+          //     var lename = document.createElement("P")
+          //     lename.id = "info_name"
+          //     lename.innerHTML = "You can download Asynchronous Material from this class"
+
+          //     var ledesc = document.createElement("P")
+          //     ledesc.id = "info_description"
+          //     ledesc.innerHTML = "You can receive access to the material the teacher used from previous sessions in the class."
+          //     adiv.appendChild(lename)
+          //     adiv.appendChild(ledesc)
+          //   // document.getElementById('root').appendChild(adiv)
+          // }
+        }
+
+        request.send()
+        //name = document.createElement("p");
+        //name.innerHTML = "Name: " + name;
+        //document.body.appendChild(name);
+
+
+        function signup(which) {
+          var url = document.location.href
+        
+        if (url.indexOf('_') > 0) {
+          var name = url.split('?')[1].split('=')[1].split('_')[0];
+          // var which = url.split('?')[1].split('_')[1];
+          var id = null
+          if (url.indexOf('&') > 0) {
+            id = which.split('&')[1]
+            name = which.split('&')[0]
+          }
+        } else {
+          var name = url.split('?')[1].split('=')[1];
+          // var which = ""
+          var id = null
+          if (url.indexOf('&') > 0) {
+            id = name.split('&')[1]
+            name = name.split('&')[0]
+          }
+        }
+        console.log(id + " " + name + " " + which)
+        // return
+        var ilysa = url
+          // return 0
+          if (id != null) {
+            var taking = new XMLHttpRequest();
+            // taking.open('GET', 'http://0.0.0.0:5000/api/v1/resources/page0-to-next-page?id=' + id, true);
+            taking.open('GET', 'https://signup.helmlearning.com:5000/api/v1/resources/page0-to-next-page?id=' + id, true);
+            //taking.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            taking.onload = function () {
+                var output = JSON.parse(this.response)
+                if (output["is_correct"] == true) {
+                  window.location.href = "class-signup-3.html?" + id + '&class=' + name + '&' + which
+                }
+                else {
+                  window.location.href = "class-signup-1.html?class=" + name + '&' + which
+                }
+            }
+            taking.send()
+          } else {
+            window.location.href = "class-signup-1.html?class=" + name + '&' + which
+          }
+        }
+    </script>
+  </body>
+</html>
+
+<!-- 
+TODO 
+  / Make confirmsignup not happen if async
+  Make a different page4 for async
+  send an email for async people
+  make which=interest add a different kind of signup to classes-to-signups
+  make which=async add a different kind of signup to classes-to-signups
+-->

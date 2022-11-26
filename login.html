@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>Admin | Log in</title>
+    
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
+          rel="stylesheet"
+        />
+        <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="icon_smol.png"/>
+      </head>
+
+      <body>
+        <div id="head">
+            <a href="https://helmlearning.com">
+                <img src='logo.png' width=320px>
+            </a>
+            <div id='header_text' class="peasant">
+                <h1 id="header_signup">Log in as a Teacher / Manager</h1>
+            </div>
+        </div>
+
+        <div id="root">
+            <div id="new_sys" class="peasant" style="background-color: #fadc7a">
+                <h2>Log in as a Teacher / Manager</h2>
+                <h3 style="color: black; font-size: 14px;">To ensure privacy, we ask you to enter your email that you is associated with your class (the email you entered when you signed up to become a teacher at HELM). If you forgot your email, then email us at <a href="mailto:helmlearning2020@gmail.com">helmelearning2020@gmail.com</a>. We also ask to enter the HELM Zoom password, to make sure you are a teacher.</h3>
+            </div>
+            <div id="instructions" class="peasant">
+                <h3> Please enter your email to verify you are a teacher for this class</h3>                
+            </div>
+        
+            <div id="input_fields_email" class="input_fields" class="peasant">
+                <h2>Teacher Email / Admin Code</h2>
+                <input type="email" id="email" onfocus="popup(id)" onblur="popdown(id)" placeholder="Enter the email that is associated with your class"required>
+            </div>
+            <div id="input_fields_pw" class="input_fields" class="peasant">
+                <h2>HELM Zoom Password</h2>
+                <input type="password" id="pw" onfocus="popup(id)" onblur="popdown(id)" placeholder="As a security measure, enter the HELM Zoom password"required>
+            </div>
+            <div id="submit" class="input_fields" class="peasant">
+                <button onclick="submit()" style="width:80px;">Verify</button>
+            </div>
+            
+        </div>
+
+
+
+      </body>
+      <script>
+          //var name = "Fun & Games with Python";
+          var url = document.location.href
+          var name = url.split('?')[1]
+          console.log(name)
+          if (url.indexOf('?') == -1) {
+              name = "python"
+          }
+          var class_name = capitalize(name);
+          for (i = 0; i < name.indexOf('-'); i++) {
+            class_name = class_name.replace('-', " ");
+          }
+
+          function popup(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "1px 1px 1px 2px #6e6e6e, 20px 20px 20px #6e6e6e";
+            textbox_div.style.transitionTimingFunction = "ease-out";
+            textbox_div.style.transition = "all 0.25s";
+            textbox_div.style.marginTop = "3px";
+            textbox_div.style.marginBottom = "17px";
+            textbox_div.style.marginLeft = "-7px";
+              
+          }
+
+          function popdown(input_id) {
+            textbox = document.getElementById(input_id);
+            textbox_div = document.getElementById('input_fields_' + input_id);
+            textbox_div.style.boxShadow = "None";
+            textbox_div.style.marginTop = "10px";
+            textbox_div.style.marginBottom = "10px";
+            textbox_div.style.marginLeft = "0px";
+
+          }
+
+          function submit() {
+            email = document.getElementById("email").value;
+            pw = document.getElementById("pw").value;
+            console.log(email);
+            if (email == '') {
+                alert("It is required that you put your Email")
+                document.getElementById("email").style.borderColor = "red"
+                return;
+            }
+            if (pw == '') {
+                alert("It is required that you put the zoom password")
+                document.getElementById("email").style.borderColor = "red"
+                return;
+            }
+            //const giving = XMLHttpRequest();
+            const url = 'https://signup.helmlearning.com:5000/api/v1/resources/login?email=' + email + '&pw=' + pw;
+            /*
+            giving.open(POST, url, true);
+            giving.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            var sending = JSON.stringify({ "name": fname, "email": email});
+            giving.send(data);
+            */
+            var taking = new XMLHttpRequest();
+            taking.open('GET', url, true);
+            //taking.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            taking.onload = function () {
+                var output = JSON.parse(this.response)
+                console.log("asdf " + output)
+                    //window.location.href = 'page2.html?name=' + fname + 'jd2r6deuqqjdemail=' + email+ 'jd2r6deuqqjdclass=' + name;
+                if (output["output"] == 1) {
+                    window.location.href = 'admin.html?token=' + output["access_token"]
+                } else {
+                    alert("Sorry! Looks like the Email and/or Zoom Password is incorrect. Try again.")
+                }
+            }
+            taking.send()
+            
+            
+            
+            //window.location.href = 'page2.html?name=' + fname + 'jd2r6deuqqjdemail=' + email + 'jd2r6deuqqjdclass=' + name;
+          }
+
+          function capitalize(s) {
+            return s.toUpperCase()
+          }
+      </script>
+
+
+
+</html>
