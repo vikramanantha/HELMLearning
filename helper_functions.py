@@ -538,8 +538,8 @@ def check_access_token(access_token):
     return 0
 
 def generateToken():
-    API_KEY = 'rZMt2mQlTNuNFDU6ALLAcA'
-    API_SEC = 'Df6QqyUtG3xOs1eW7ABah11GdyC7HqXCUW3J'
+    API_KEY = '[SECRET]'
+    API_SEC = '[SECRET]'
     token = jwt.encode(
         # Create a payload of the token containing API Key & expiration time
         {"iss": API_KEY, "exp": time() + 5000},
