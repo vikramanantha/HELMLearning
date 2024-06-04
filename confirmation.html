@@ -86,8 +86,9 @@
         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         request.onload = function () {
             var data = JSON.parse(this.response);
-            document.getElementById("thisisamerica").innerHTML = "Thank you for your interest!<br><br>An email has been sent to you with a link to complete the teacher signup form and create your class."
-            document.getElementById("thisisamerica").innerHTML += "<br><br> <a href='" + data[0] + "'>If you would like to create your class, here is the link.</a>"
+            document.getElementById("thisisamerica").innerHTML = "Thank you for your interest!<br><br>Note: you still must complete the full sign up form to apply to be a teacher."
+            document.getElementById("thisisamerica").innerHTML += "<br><br>An email has been sent to you with a link to complete the teacher signup form and create your class."
+            document.getElementById("thisisamerica").innerHTML += "<br><br> <a href='" + data[0] + "'>To finish the application, click here</a>"
         }
         request.send()
         itsallgood();

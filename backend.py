@@ -47,7 +47,7 @@ from flask import jsonify, make_response, request, send_from_directory
 from flask_cors import CORS
 from mysql.connector import errorcode
 import helper_functions as hf
-import make_df_v4
+import make_df_v4_v2 as make_df
 # from OpenSSL import SSL
 # context = SSL.Context(SSL.PROTOCOL_TLSv1_2)
 # context.use_privatekey_file('server.key')
@@ -57,16 +57,30 @@ import reco_train
 import timed_email_sending as tes
 from pprint import pprint
 # from flask import Flask, request, send_from_directory
+
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+import sentry_sdk
+sentry_sdk.init(
+    dsn="https://b85ba02c189745b9a9f33e49770c88e2@o4504980953563136.ingest.sentry.io/4504980956250112",
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0
+)
+
 app = flask.Flask(__name__, static_folder='static')  
 app.config["DEBUG"] = True
 CORS(app, resources = {r"/api/v1/*": {"origins": "*"}})
 #print("Alloo")
 config = {
-    'user': '[SECRET]',
-    'password': '[SECRET]',
-    'host': '[SECRET]', #52.21.172.100:22
-    'port': '[SECRET]',
-    'database': '[SECRET]'
+    'user': 'helmlearning',
+    'password': ':RYP9Y,37:mDm',
+    'host': 'helmlearningdatabase-1.cnoqlueuri3g.us-east-1.rds.amazonaws.com', #52.21.172.100:22
+    'port': '3306',
+    'database': 'HELM_Database'
 }
 
 def gettime(starttime, endtime):
@@ -131,8 +145,9 @@ def getdate(startdate, enddate):
 
 @app.route('/api/v1/resources/train_alg', methods=['GET'])
 def train_reco_alg():
+    make_df.main()
     reco_train.main()
-    make_df_v4.main()
+    
     return jsonify(['0'])
 
 
@@ -541,7 +556,7 @@ def connect_to_send(student_fname, email, class_name):
 
     #tutorial at https://realpython.com/python-send-email/
 
-
+# MAKE IT WORK FOR ASYNC AND FOR NORMAL
 def connect_to_send_v2(student_fname, email, class_name, which):
     print(which)
     if (which == "async"): 
@@ -784,6 +799,7 @@ def page4_data():
     return jsonify({})  
 
 
+# conn=MySQLdb.connect(host='helmlearningdatabase-1.cnoqlueuri3g.us-east-1.rds.amazonaws.com', database='HELM_Test_Database', user='helmlearning',passwd='H3lml3arning')
 @app.route('/api/v1/resources/page1-receive', methods=['GET'])
 def page1_receive():
     try:
@@ -1247,8 +1263,8 @@ def get_students():
     cnx = create_connection()
     cursor = cnx.cursor(buffered=True)
     query_params = request.args
-    username = '[SECRET]'
-    password = '[SECRET]'
+    username = 'hElMlEaRnInG'
+    password = 'mvemjsun'
     un = query_params.get('un')
     pw = query_params.get('pw')
     if (username != un or password != pw):
@@ -1712,17 +1728,15 @@ def newsession_2():
     cursor.execute("UPDATE classes SET zoom='{}' WHERE short_name = '{}'".format(zoomlink, linfo[1])) 
     
 
-    cursor.execute("SELECT email FROM classes WHERE short_name = '{}'".format(linfo[1]))
-    teach_email = cursor.fetchall()[0]
-    if "and" in teach_email:
-        teach_email = list(teach_email)
-        teach_email = teach_email.split(" and ")
-        
-    hf.send_email(
-        "A New Session Has Been Created For Your Class! | HELM Learning",
-        "Hey {}, <br>A new session for your class has been created. You can check the details at <a href='teachers.helmlearning.com?{}'>teachers.helmlearning.com?{}</a> or at <a href='signup.helmlearning.com?{}'>signup.helmlearning.com?{}</a>".format(linfo[0], linfo[1], linfo[1], linfo[1], linfo[1]),
-        *teach_email
-    )
+    teach_email = hf.get_current_teacher_emails(linfo[1])
+    
+    for i in teach_email:
+    
+        hf.send_email(
+            "A New Session Has Been Created For Your Class! | HELM Learning",
+            "Hey {}, <br>A new session for your class has been created. You can check the details at <a href='teachers.helmlearning.com?{}'>teachers.helmlearning.com?{}</a> or at <a href='signup.helmlearning.com?{}'>signup.helmlearning.com?{}</a>".format(i[0], linfo[1], linfo[1], linfo[1], linfo[1]),
+            *i[1]
+        )
     hf.stop(cnx, cursor)
     return jsonify(["0"])
 
@@ -1921,15 +1935,17 @@ def signup_to_be_teach_2():
         hf.stop(cnx, cursor)
         return jsonify(["0"])
 
+    reuse_index = 22
+
     ledetails = [
         "teacher", "email", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie",
         "name", "short_name", "e1_summary", "description", "boogiewoogie", "boogiewoogie",
-        "ages", "boogiewoogie", "starttime", "day", "startdate", "e1_additionalwork", "e4_continuingfurther"
+        "ages", "boogiewoogie", "starttime", "day", "startdate", "e1_additionalwork", "e4_continuingfurther", "boogiewoogie"
     ]
     leteacherdetails = [
         "name", "email", "phnumber", "boogiewoogie", "yog", "description", "image", "boogiewoogie", "boogiewoogie",
         "boogiewoogie", "class", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie",
-        "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie"
+        "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie", "boogiewoogie"
     ]
     # if (linfo[leteacherdetails.index("image")]):
         # return jsonify([4])
@@ -1983,7 +1999,8 @@ def signup_to_be_teach_2():
                         ### CHECK FOR BREAK WEEKS ###
                     tobeinthedb2.append(enddate)
                     tobeinthedb1.append("enddate")
-                except:
+                except Exception as e:
+                    print(e)
                     return jsonify(['2'])
                 
         ### SEE IF CLASS TIME CONFLICTS ###
@@ -2010,6 +2027,8 @@ def signup_to_be_teach_2():
         print(tobeinthedb2)
         for i in range(len(max(tobeinthedb1, tobeinthedb2))):
             print("%s:\n   %s" % (tobeinthedb1[i], tobeinthedb2[i]))
+            
+        alreadythere = False
         try:
             cursor.execute(('INSERT INTO classes (' + ('{}, '*len(tobeinthedb1))[:-2] + ') VALUES (' + ('"{}", '*len(tobeinthedb1))[:-2] + ')').format(*tobeinthedb1, *tobeinthedb2))
             cnx.commit()
@@ -2028,7 +2047,7 @@ def signup_to_be_teach_2():
             tochange = ['description', 'startdate', 'enddate', 'starttime', 'endtime', 'teacher', 'email', 'day', 'ages', 'e1_summary', 'e1_additionalwork', 'e4_continuingfurther']
             # sql = 
             for i in tochange:
-                if ('no chango' in tobeinthedb2[tobeinthedb1.index(i)]): 
+                if ('no chango' in tobeinthedb2[tobeinthedb1.index(i)] or linfo[reuse_index] == "reuse1"): 
                     continue
                 sql = "UPDATE classes set " + i + ' = "' + tobeinthedb2[tobeinthedb1.index(i)] + '" WHERE id = %s' % cid
                 cursor.execute(sql)
@@ -2038,9 +2057,11 @@ def signup_to_be_teach_2():
             cnx.commit()
             print()
             print("\nTHIS CLASS ALREADY EXISTS!\n")
+            alreadythere = True
             # cursor.execute("UPDATE classes SET display = '0' WHERE id = %s" % cid)
             # return jsonify(['3'])
-    cursor.execute("UPDATE classes SET display = '0' WHERE short_name = '%s'" % new_class_short_name)
+    if (not alreadythere):
+        cursor.execute("UPDATE classes SET display = '0' WHERE short_name = '%s'" % new_class_short_name)
     dabee = []
     isteacheralr = hf.is_teacher_is_in_db(cursor, linfo[leteacherdetails.index('name')], linfo[leteacherdetails.index('email')])
     for i in range(len(leteacherinfo)):
@@ -2053,21 +2074,22 @@ def signup_to_be_teach_2():
         if (leteacherdetails[i] == "image" and not isteacheralr):
             if (leteacherinfo[i] == "" or leteacherinfo[i] == None):
                 leteacherinfo[i] = "https://drive.google.com/file/d/1cSN7k1q0_DbNsOOo3fL8R6lH-Z2elh3R/view?usp=sharing"
-            try:
-                print("1. asdiufnaljnskf")
-                error = hf.download_googledrive_image(leteacherinfo[i], "dumpsterfiles/" + leteacherinfo[leteacherdetails.index("name")].lower().replace(" ", "-") + "-image.jpeg")
-                # MAKE THAT ^^^^
-                print("2. asdiufnaljnskf")
-                if error == 1:
+            # try:
+            #     print("1. asdiufnaljnskf")
+            #     error = hf.download_googledrive_image(leteacherinfo[i], "dumpsterfiles/" + leteacherinfo[leteacherdetails.index("name")].lower().replace(" ", "-") + "-image.jpeg")
+            #     # MAKE THAT ^^^^
+            #     print("2. asdiufnaljnskf")
+            #     if error == 1:
                     
-                    cursor.execute("DELETE FROM classes WHERE short_name = '{}'".format(leteacherinfo[leteacherdetails.index("class")]))
-                    cnx.commit()
-                    return jsonify(['4'])
-            except:
-                print("asliudfblaisdnfkjlkjasdnfkjasnf")
-                cursor.execute("DELETE FROM classes WHERE short_name = '{}'".format(leteacherinfo[leteacherdetails.index("class")]))
-                cnx.commit()
-                return jsonify(['4'])
+            #         cursor.execute("DELETE FROM classes WHERE short_name = '{}'".format(leteacherinfo[leteacherdetails.index("class")]))
+            #         cnx.commit()
+            #         return jsonify(['4'])
+            # except Exception as e:
+            #     print("asliudfblaisdnfkjlkjasdnfkjasnf")
+            #     print(e)
+            #     cursor.execute("DELETE FROM classes WHERE short_name = '{}'".format(leteacherinfo[leteacherdetails.index("class")]))
+            #     cnx.commit()
+            #     return jsonify(['4'])
             hf.upload_file_to_s3('helm-teacher-images', "dumpsterfiles/" + leteacherinfo[leteacherdetails.index("name")].lower().replace(" ", "-") + "-image.jpeg", leteacherinfo[leteacherdetails.index("name")].lower().replace(" ", "-") + "-image.jpeg")
             dabee[-1] = 'https://helm-teacher-images.s3.amazonaws.com/' + leteacherinfo[leteacherdetails.index("name")].lower().replace(" ", "-") + "-image.jpeg"
     if (position == "teacher"): 
@@ -2085,20 +2107,20 @@ def signup_to_be_teach_2():
     teacher_id = hf.add_teacher_to_db(dabee)
 
     if (position == "teacher"):
-        cursor.execute("SELECT teacher, name, starttime, endtime, startdate, enddate, description, e1_summary, e1_additionalwork, e4_continuingfurther, day FROM classes WHERE short_name = '{}'".format(new_class_short_name))
-        #                         0      1        2         3         4         5          6           7               8                    9            10
-        class_info = list(cursor.fetchall()[0])
+        # cursor.execute("SELECT teacher, name, starttime, endtime, startdate, enddate, description, e1_summary, e1_additionalwork, e4_continuingfurther, day FROM classes WHERE short_name = '{}'".format(new_class_short_name))
+        # #                         0      1        2         3         4         5          6           7               8                    9            10
+        # class_info = list(cursor.fetchall()[0])
         
-        class_info[2] = str(class_info[2]) + " - " + str(class_info[3])
-        if class_info[10] == "weeklong":
-            day = "Mon-Fri"
-        else:
-            day = class_info[10] + "s"
-        print(class_info)
-        class_info[4] = day + ", " + str(class_info[4]) + " - " + str(class_info[5])
-        class_info.remove(class_info[10])
-        class_info.remove(class_info[5])
-        class_info.remove(class_info[3])
+        # class_info[2] = "%s - %s" % (class_info[2], class_info[3])
+        # if class_info[10] == "weeklong":
+        #     day = "Mon-Fri"
+        # else:
+        #     day = class_info[10] + "s"
+        # print(class_info)
+        # class_info[4] = day + ", " + str(class_info[4]) + " - " + str(class_info[5])
+        # class_info.remove(class_info[10])
+        # class_info.remove(class_info[5])
+        # class_info.remove(class_info[3])
         link = "teachers.helmlearning.com/confirm-teacher-signup.html?{}&buggle".format(new_class_short_name.replace(" ", '-'))
         email = """
         Hello {},<br>
@@ -2114,11 +2136,11 @@ def signup_to_be_teach_2():
         <br>
         Can you confirm all of those details? Or is there anything you would want to change?<br>
         <br>
-        One other detail that we are making sure all teachers know is their responsabilities as a teacher. They aren't much, but it shouldn't be taken lightly. 
+        One other detail that we are making sure all teachers know is their responsibilities as a teacher. They aren't much, but it shouldn't be taken lightly. 
         Every teacher must look out for emails from HELM Learning, as well as any texts that come your way. Teachers should also make sure they know when their class is, 
-        and they have their own way of making sure they are on time for class, in addition to the HELM reminder emails. Please also make sure that if there is an issue, you communucate that to us.<br>
+        and they have their own way of making sure they are on time for class, in addition to the HELM reminder emails. Please also make sure that if there is an issue, you communicate that to us.<br>
         <br>
-        We have had a couple incidents in the past where teachers don't show to their own class, and we have been forced to to cancel the class after students were already waiting in the Zoom Room for 30 mins. 
+        We have had a couple incidents in the past where teachers don't show to their own class, and we have been forced to cancel the class after students were already waiting in the Zoom Room for 30 mins. 
         Try not to let it come to that.<br>
         If you have any issues with that, or you will be unable to teach your class, please let us know ASAP.<br>
         <br>
@@ -2133,7 +2155,7 @@ def signup_to_be_teach_2():
         cursor.execute("SELECT teacher, name, starttime, endtime, startdate, enddate, description, e1_summary, e1_additionalwork, e4_continuingfurther, day FROM classes WHERE short_name = '{}'".format(new_class_short_name))
         #                         0       1       2         3         4         5          6           7               8                    9            10
         class_info = list(cursor.fetchall()[0])
-        class_info[2] = str(hf.td_dt(class_info[2], "time").strftime("%I-%M%p")) + " - " + str(hf.td_dt(class_info[3], "time").strftime("%I-%M%p"))
+        class_info[2] = str(hf.td_dt(class_info[2], "time").strftime("%I:%M%p")) + " - " + str(hf.td_dt(class_info[3], "time").strftime("%I:%M%p"))
         if class_info[10] == "weeklong":
             day = "Mon-Fri"
         else:
@@ -2146,9 +2168,14 @@ def signup_to_be_teach_2():
         class_info.append(link)
         print(class_info)
 
-        cursor.execute("SELECT email FROM classes WHERE short_name = '{}'".format(new_class_short_name))
-        teach_email = cursor.fetchall()[0][0]
-        hf.send_email("Thank you for signing up to become a teacher at HELM Learning", email.format(*class_info), teach_email)
+        # cursor.execute("SELECT email FROM classes WHERE short_name = '{}'".format(new_class_short_name))
+        # teach_email = cursor.fetchall()[0][0]
+        
+        teach_email = hf.get_current_teacher_emails(new_class_short_name)
+        
+        for i in teach_email:
+            class_info[0] = i[0]
+            hf.send_email("Thank you for signing up to become a teacher at HELM Learning", email.format(*class_info), i[-1])
 
         try:
             reco_train.main()
@@ -2640,23 +2667,30 @@ def upcomingclasses():
     classes = cursor.fetchall()
     weeklongs = []
     for i in classes:
+        if ("and" in i[2]): cursor.execute("SELECT yog from teachers where name = '%s'" % i[2].split(" and ")[0])
+        else: cursor.execute("SELECT yog from teachers where name = '%s'" % i[2])
+        teacher_yog = cursor.fetchall()[0][0]
         weeklongs.append({})
         weeklongs[-1]["Name"] = i[0]
         weeklongs[-1]["Signup Link"] = i[1].replace(" ", "-")
-        weeklongs[-1]["Teacher"] = i[2]
+        weeklongs[-1]["Teacher"] = "Taught by %s" % i[2]
         weeklongs[-1]["Dates"] = "Running the week of " + i[3].strftime("%b %d, %Y")
         weeklongs[-1]["Icon"] = i[4]
+        weeklongs[-1]["School"] = teacher_yog
 
     cursor.execute("SELECT name, short_name, teacher, startdate, enddate, day, icon FROM classes WHERE day != '' AND day != 'weeklong' and display = '1' ORDER BY startdate")
     classes = cursor.fetchall()
     fiveweek = []
     for i in classes:
+        cursor.execute("SELECT yog from teachers where name = '%s'" % i[2])
+        teacher_yog = cursor.fetchall()[0][0]
         fiveweek.append({})
         fiveweek[-1]["Name"] = i[0]
         fiveweek[-1]["Signup Link"] = i[1].replace(" ", "-")
-        fiveweek[-1]["Teacher"] = i[2]
+        fiveweek[-1]["Teacher"] = "Taught by %s" % i[2]
         fiveweek[-1]["Dates"] = "On " + i[5] + "s, " + i[3].strftime("%b %d") + " - " + i[4].strftime("%b %d")
         fiveweek[-1]["Icon"] = i[6]
+        fiveweek[-1]["School"] = teacher_yog
 
     return jsonify({
         "Synchronous Weeklong Classes": weeklongs,
@@ -2705,6 +2739,13 @@ def get_num_students():
         "Number of Classes": str(numasyncclasses+numsyncclasses),
     })
     # return jsonify({"Number of Students": "%sK" % "3.8"})
+
+@app.route('/api/v1/resources/get_year', methods=['GET'])
+def get_year():
+    from datetime import date
+    # raise Exception("You are a sussy boy")
+    
+    return jsonify([date.today().year])
 
 @app.route('/api/v1/resources/contactusemail', methods=['GET'])
 def contactus_email():
@@ -2758,22 +2799,62 @@ def get_testimonial_info():
             "Person": "Rashmi Gupta, Parent",
         },
         {
+            "Message": "The classes organized by HELM are just so nice and interesting, and the teachers are very patient and explain the lessons very nicely. Thank you for the wonderful classes and the kind support of the teachers and the whole team of HELM!",
+            "Person": "Suha Zubair, Student"
+        },
+        {
             "Message": "My kids enjoyed the Chess class and every class built the interest and confidence in them. They were introduced to every piece one by one and learned how to use them using practice sessions. They became so confident that they challenged me couple of times, based on the confidence they got from playing in the Chess class.",
             "Person": "Monika Wadhwa, Parent",
         },
         {
-            "Message": "My near-11 year old (going to 6th grade from coming Fall) loved it so much that he explained and ran his code (Python) to every family member who would listen (including myself and his grandparents!).",
+            "Message": "My near-11 year old (going to 6th grade from coming Fall) loved it so much that he explained and ran his code (Python) to every family member who would listen (including myself and his grandparents!). A Python class where the students created and demo-ed a game -- each actually wrote their own code. This class has sparked a great interest in coding for near-11-year-old son!",
             "Person": "Joyoni Dey, Parent",
         },
         {
             "Message": "A thoroughly enjoyable class! The instructor made valuable connections to modern microbiology research concerning the current coronavirus, was very concise, and was able to answer all questions in depth.",
             "Person": "Samantha Esselstyn, Student",
         },
+        {
+            "Message": "This class was very fun and open, and I got to learn about something I usually wouldn't involve myself with. I'm glad I got this experience and I'm now more confident in my knowledge of speech interpretation. I'm also more aware of how interesting the subject can be, and I would love to get involved with it again in the future.",
+            "Person": "Student"
+        },
+        {
+            "Message": "This was a generally very helpful and fun class, the teacher was kind, patient, and didnt waste much time. I learned a vast amount of knowledge and experience, and would recommend others to join.",
+            "Person": "Stanley Liu, Student"
+        },
+        {
+            "Message": "I learned a lot from these classes, and really enjoyed attending them. I think the teacher did a good job, making it fun for us. The games were interesting. I loved the class! I definitely learned a lot from it!!",
+            "Person": "Student"
+        }
+    ]
+    awards = [
+        {
+            "Image": "https://helm-external-images.s3.amazonaws.com/DiamondChallenge.jpg",
+            "Image Alt Text": "Vikram Anantha wins First Place at Diamond Challenge",
+            "Heading Text": "1st Place Winner at Diamond Challenge - Regionals",
+            "Body Text": "On March 5, 2023, HELM Learning won 1st place at the <a target='_blank' href='https://diamondchallenge.org/'>Diamond Challenge</a> Pitching Round, hosted in Newark, Deleware. This award is a stepping stone to help us help the world. Team HELM Learning is now a finalist for the Diamond Challenge Summit hosted on April 23-25 in Newark Deleware.",
+            "Caption Text": "Pictured: Vikram Anantha receives check at Diamond Challenge as a member of Team HELM Learning (other team member, Aru Bagga, not shown)"
+        },
+        {
+            "Image": "https://helm-external-images.s3.amazonaws.com/KurtGiessler.jpg",
+            "Image Alt Text": "Vikram Anantha receives grant money from the Kurt Giessler Foundation",
+            "Heading Text": "Receiver of Kurt Giessler Foundation Prize of Achievement Grant Money",
+            "Body Text": "In October 2022, HELM Learning received grant money from the <a target='_blank' href='http://kurtgiessler.com/index.html'>Kurt Giessler Foundation</a>. This grant money is a big stepping stone, pushing us one step closer to helping the world.",
+            "Caption Text": "Pictured: Vikram Anantha receives award of Prize of Achievement from the Kurt Giessler Foundation"
+        },
+        {
+            "Image": "https://helm-external-images.s3.amazonaws.com/ScienceFair2021.png",
+            "Image Alt Text": "Vikram Anantha wins 4th place at 2021 MSEF States",
+            "Heading Text": "4th place winner at Massachusetts Science and Enginering Fair - States 2021 for the Class Recommendation Algorithm",
+            "Body Text": "In May 2021, Vikram Anantha won 4th place at the <a href='https://sites.google.com/site/regionivscifair/winners/2021-winners'>Massachusetts Science and Enginering Fair (MSEF) States 2021</a> for the Class Recommendation Algorithm which was integrated into the HELM Learning class sign up experience. This award allows us to call our algorithm an Award Winning Algorithm.",
+            "Caption Text": "Pictured: Vikram Anantha's Certificate from the MSEF 2021 States"
+        }
     ]
 
     return jsonify({
         "News": news,
-        "Testinomials": testimonials
+        "Testinomials": testimonials,
+        "Awards": awards
     })
 
 @app.route('/api/v1/resources/show_interest_teacher', methods=['GET'])
@@ -2825,7 +2906,7 @@ def send_interest_email():
 
     content = """
     Hi {},<br>
-    Thank you so much for your interest in teaching about {} at HELM Learning! If you would like to continue the teacher's form, <a href='{}'>click here</a>.<br>
+    Thank you so much for your interest in teaching about {} at HELM Learning! To finish and submit your teacher application, <a href='{}'>click here</a>.<br>
     <br>
     See you soon!<br>
     Vikram from <strong style='color: #642c94'>HELM Learning</strong><br>
@@ -3015,7 +3096,6 @@ PAGE 4: select class information from database and send it to webclient as JSON
     
 '''
     
-
 
 # app.run(host='0.0.0.0', debug=True, port=5000, ssl_context=('dumpsterfiles/cert3.pem', 'dumpsterfiles/key3.pem'))
 app.run(host='0.0.0.0', port=5000, ssl_context=('/etc/letsencrypt/live/signup.helmlearning.com/fullchain.pem', '/etc/letsencrypt/live/signup.helmlearning.com/privkey.pem'))

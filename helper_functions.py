@@ -55,11 +55,11 @@ from email import encoders
 import mimetypes
 
 config = {
-    'user': '[SECRET]',
-    'password': '[SECRET]',
-    'host': '[SECRET]', #52.21.172.100:22
-    'port': '[SECRET]',
-    'database': '[SECRET]'
+    'user': 'helmlearning',
+    'password': ':RYP9Y,37:mDm',
+    'host': 'helmlearningdatabase-1.cnoqlueuri3g.us-east-1.rds.amazonaws.com', #52.21.172.100:22
+    'port': '3306',
+    'database': 'HELM_Database'
 }
 
 days = {
@@ -272,6 +272,11 @@ def decode(y): # df-gb-sdsaasd-sd ==> 2272
     print(x)
     return x
 
+# print(encode("ableton"))
+# print(decrypt(encrypt("H3lping3v3ryon3", 26), 26))
+# print(encrypt("admin.36912", 10))
+# print(decrypt("knwsx8=@C;<", 10))
+
 def get_related_classes(class_name):
     sorted_classes = []
     cnx, cursor = start()
@@ -308,7 +313,8 @@ def get_tags_from_classes(classes):
     cnx, cursor = start()
     sql0 = 'SELECT id FROM classes'
     cursor.execute(sql0)
-    num_classes = cursor.fetchall()[-1][0]
+    num_classes = cursor.fetchall()
+    class_ids = [i for (i, ) in num_classes]
     list_o_tags = []
     for i in classes:
         cursor.execute("SELECT tag_id FROM classes_to_tags WHERE class_id = '{}'".format(i))
@@ -317,7 +323,7 @@ def get_tags_from_classes(classes):
             list_o_tags.append(j[0])
     list_o_tags = list(set(list_o_tags))
     to_return = []
-    for i in range(3, num_classes+1):
+    for i in class_ids:
         cursor.execute("SELECT tag_id FROM classes_to_tags WHERE class_id = '{}'".format(i))
         sb = np.array(cursor.fetchall())
         sb = list(np.reshape(sb, (1, -1))[0])
@@ -432,41 +438,46 @@ def send_email(subject, email, *recipients):
 
 def send_email_v2(subject, email, *recipients):
     
-    CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
-    API_NAME = 'gmail'
-    API_VERSION = 'v1'
-    SCOPES = ['https://mail.google.com/']
+    try:
     
-    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-
-    for i in recipients:
-        print("\n")
-        try:
-            message = MIMEMultipart("alternative")
-            message["Subject"] = subject
-            message["From"] = formataddr(('HELM Learning', 'helmlearning2020@gmail.com'))
-            
-
-            if (type(i) is tuple):
-                message["To"] = formataddr((i[1], i[0]))
-                message.attach(MIMEText(email.format(i[1]), "html"))
-            else:
-                message["To"] = i
-                message.attach(MIMEText(email, "html"))
-
-            print("Subject: %s" % message["Subject"])
-            print("From: %s" % message["From"])
-            print("To: %s" % message["To"])
+        CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
+        API_NAME = 'gmail'
+        API_VERSION = 'v1'
+        SCOPES = ['https://mail.google.com/']
         
-            raw_string = base64.urlsafe_b64encode(message.as_bytes()).decode()
-            message = service.users().messages().send(
-                userId='me',
-                body={'raw': raw_string}).execute()
+        service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+
+        for i in recipients:
+            print("\n")
+            try:
+                message = MIMEMultipart("alternative")
+                message["Subject"] = subject
+                message["From"] = formataddr(('HELM Learning', 'helmlearning2020@gmail.com'))
+                
+
+                if (type(i) is tuple):
+                    message["To"] = formataddr((i[1], i[0]))
+                    message.attach(MIMEText(email.format(i[1]), "html"))
+                else:
+                    message["To"] = i
+                    message.attach(MIMEText(email, "html"))
+
+                print("Subject: %s" % message["Subject"])
+                print("From: %s" % message["From"])
+                print("To: %s" % message["To"])
             
-            print(message['labelIds'][0])
-        except:
-            print("NOT SENT")
-    print("\n")
+                raw_string = base64.urlsafe_b64encode(message.as_bytes()).decode()
+                message = service.users().messages().send(
+                    userId='me',
+                    body={'raw': raw_string}).execute()
+                
+                print(message['labelIds'][0])
+            except:
+                print("NOT SENT")
+        print("\n")
+    except Exception as e:
+        print(e)
+        print("COULD NOT SEND EMAIL")
 
 # send_email_v2(
 #     "Here comes the Sun",
@@ -538,8 +549,8 @@ def check_access_token(access_token):
     return 0
 
 def generateToken():
-    API_KEY = '[SECRET]'
-    API_SEC = '[SECRET]'
+    API_KEY = 'rZMt2mQlTNuNFDU6ALLAcA'
+    API_SEC = 'Df6QqyUtG3xOs1eW7ABah11GdyC7HqXCUW3J'
     token = jwt.encode(
         # Create a payload of the token containing API Key & expiration time
         {"iss": API_KEY, "exp": time() + 5000},
@@ -553,70 +564,72 @@ def generateToken():
     return token
 
 def createMeeting(short_name):
-    cnx, cursor = start()
-    cursor.execute("SELECT starttime FROM classes WHERE short_name='{}'".format(short_name))
-    starttime = cursor.fetchall()[0][0]
-    cursor.execute("SELECT startdate FROM classes WHERE short_name='{}'".format(short_name))
-    startdate = cursor.fetchall()[0][0]
-    cursor.execute("SELECT day FROM classes WHERE short_name='{}'".format(short_name))
-    day = cursor.fetchall()[0][0]
-    if (day == 'weeklong'): 
-        reccurence = {
-            "type": 1,
-            "repeat_interval": 1,
-            "end_times": 7
-        }
+    try:
+        cnx, cursor = start()
+        cursor.execute("SELECT starttime FROM classes WHERE short_name='{}'".format(short_name))
+        starttime = cursor.fetchall()[0][0]
+        cursor.execute("SELECT startdate FROM classes WHERE short_name='{}'".format(short_name))
+        startdate = cursor.fetchall()[0][0]
+        cursor.execute("SELECT day FROM classes WHERE short_name='{}'".format(short_name))
+        day = cursor.fetchall()[0][0]
+        if (day == 'weeklong'): 
+            reccurence = {
+                "type": 1,
+                "repeat_interval": 1,
+                "end_times": 7
+            }
 
-    else: 
-        reccurence = {
-            "type": 2,
-            "repeat_interval": 1,
-            "weekly_days": days[day],
-            "end_times": 7
-        }
+        else: 
+            reccurence = {
+                "type": 2,
+                "repeat_interval": 1,
+                "weekly_days": days[day],
+                "end_times": 7
+            }
 
 
-    meetingdetails = {"topic": "%s" % short_name,
-				"type": 8,
-				"start_time": "%sT%s" % (startdate, starttime),
-				"duration": "60",
-				"timezone": "America/New York",
-				"agenda": "HELM",
-                "password": "PreMalone",
-				"recurrence": reccurence,
-				"settings": {"host_video": "true",
-							"participant_video": "false",
-							"join_before_host": "False",
-							"mute_upon_entry": "true",
-							"audio": "voip",                            
-							}
-				}
-    
-    headers = {'authorization': 'Bearer %s' % generateToken(),
-			'content-type': 'application/json'}
-    r = requests.post(
-		f'https://api.zoom.us/v2/users/me/meetings',
-	headers=headers, data=json.dumps(meetingdetails))
-    
-    print("\n creating zoom meeting ... \n")
-	# print(r.text)
-	# converting the output into json and extracting the details
-    y = json.loads(r.text)
-	# print(
-	# 	y
-    # )
-    join_URL = y["join_url"]
-    starttime = y["occurrences"][0]['start_time']
-    meetingPassword = y["password"]
-    
-    # print(
-	# 	'Zoom Meeting Link: {} \nPw: "{}"\n'.format(join_URL, meetingPassword)
-    # )
-    print("Created a zoom meeting %s \nStarting on %s" % (join_URL, starttime))
-    # pprint(y)
-    # pprint(meetingdetails)
-    stop(cnx, cursor)
-    return join_URL
+        meetingdetails = {"topic": "%s" % short_name,
+                    "type": 8,
+                    "start_time": "%sT%s" % (startdate, starttime),
+                    "duration": "60",
+                    "timezone": "America/New York",
+                    "agenda": "HELM",
+                    "password": "PreMalone",
+                    "recurrence": reccurence,
+                    "settings": {"host_video": "true",
+                                "participant_video": "false",
+                                "join_before_host": "False",
+                                "mute_upon_entry": "true",
+                                "audio": "voip",                            
+                                }
+                    }
+        
+        headers = {'authorization': 'Bearer %s' % generateToken(),
+                'content-type': 'application/json'}
+        r = requests.post(
+            f'https://api.zoom.us/v2/users/me/meetings',
+        headers=headers, data=json.dumps(meetingdetails))
+        
+        print("\n creating zoom meeting ... \n")
+        # print(r.text)
+        # converting the output into json and extracting the details
+        y = json.loads(r.text)
+        print(y)
+        join_URL = y["join_url"]
+        starttime = y["occurrences"][0]['start_time']
+        meetingPassword = y["password"]
+        
+        # print(
+        # 	'Zoom Meeting Link: {} \nPw: "{}"\n'.format(join_URL, meetingPassword)
+        # )
+        print("Created a zoom meeting %s \nStarting on %s" % (join_URL, starttime))
+        # pprint(y)
+        # pprint(meetingdetails)
+        stop(cnx, cursor)
+        return join_URL
+    except Exception as e:
+        print(e)
+        print("COULDN'T CREATE ZOOM LINK")
 
 def generate_qrcode(classname):
     output = 'dumpsterfiles/%s_qrcode.png' % classname.lower().replace(" ", "-")
@@ -695,83 +708,91 @@ def generate_flyer_v2(classname):
 
 
 def upload_file_to_folder(filename, filepath, parent_folder_id):
-    CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
-    API_NAME = 'drive'
-    API_VERSION = 'v3'
-    SCOPES = ['https://www.googleapis.com/auth/drive']
+    try:
+        CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
+        API_NAME = 'drive'
+        API_VERSION = 'v3'
+        SCOPES = ['https://www.googleapis.com/auth/drive']
 
-    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+        service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
 
-    # Upload a file
-    file_metadata = {
-        'name': filename,
-        'parents': [parent_folder_id]
-    }
+        # Upload a file
+        file_metadata = {
+            'name': filename,
+            'parents': [parent_folder_id]
+        }
 
-    media_content = MediaFileUpload(filepath, mimetype='image/png')
+        media_content = MediaFileUpload(filepath, mimetype='image/png')
 
-    file = service.files().create(
-        body=file_metadata,
+        file = service.files().create(
+            body=file_metadata,
 
-        media_body=media_content
-    ).execute()
+            media_body=media_content
+        ).execute()
 
-    print("%s has been uploaded to Google Drive Folder with ID %s" % (filename, parent_folder_id))
+        print("%s has been uploaded to Google Drive Folder with ID %s" % (filename, parent_folder_id))
+    except Exception as e:
+        print(e)
+        print("COULDN'T UPLOAD FILE")
 
 def download_googledrive_image(link, file_name):
-    CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
-    API_NAME = 'drive'
-    API_VERSION = 'v3'
-    SCOPES = ['https://www.googleapis.com/auth/drive']
-
-    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-
     try:
-        id = link.split("/")[-2]
-    except:
+        CLIENT_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
+        API_NAME = 'drive'
+        API_VERSION = 'v3'
+        SCOPES = ['https://www.googleapis.com/auth/drive']
+
+        service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+
+        try:
+            id = link.split("/")[-2]
+        except:
+            return 1
+        request = service.files().get_media(fileId=id)
+
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fd=fh, request=request)
+        done = False
+
+        while not done:
+            status, done = downloader.next_chunk()
+            print('Download progress {0}'.format(status.progress() * 100))
+        # print("\n1.\n")
+        fh.seek(0)
+        # print("\n2.\n")
+        with open(file_name, 'wb') as f:
+            f.write(fh.read())
+            f.close()
+        # print("\n3.\n")
+        # print(file_name)
+        # im = Image.open(file_name)
+        # print("\n4.\n")
+        # width, height = im.size
+        # print("\n5.\n")
+        # if (width < height):
+        #     print("\n6.\n")
+        #     left = 0 
+        #     top = 200
+        #     right = width
+        #     bottom = top+width
+        #     print("\n7.\n")
+        # elif (height < width):
+        #     print("\n8.\n")
+        #     left = (width/2) - (height/2)
+        #     top = 0
+        #     right = (width/2) + (height/2)
+        #     bottom = height
+        #     print("\n9.\n")
+
+        # print("\n10.\n")
+        # im1 = im.crop((left, top, right, bottom))
+        # im1.save(file_name)
+        # print("\n11.\n")
+        return 0
+    except Exception as e:
+        print("COULDN'T DOWNLOAD FILE")
         return 1
-    request = service.files().get_media(fileId=id)
-
-    fh = io.BytesIO()
-    downloader = MediaIoBaseDownload(fd=fh, request=request)
-    done = False
-
-    while not done:
-        status, done = downloader.next_chunk()
-        print('Download progress {0}'.format(status.progress() * 100))
-    # print("\n1.\n")
-    fh.seek(0)
-    # print("\n2.\n")
-    with open(file_name, 'wb') as f:
-        f.write(fh.read())
-        f.close()
-    # print("\n3.\n")
-    # print(file_name)
-    # im = Image.open(file_name)
-    # print("\n4.\n")
-    # width, height = im.size
-    # print("\n5.\n")
-    # if (width < height):
-    #     print("\n6.\n")
-    #     left = 0 
-    #     top = 200
-    #     right = width
-    #     bottom = top+width
-    #     print("\n7.\n")
-    # elif (height < width):
-    #     print("\n8.\n")
-    #     left = (width/2) - (height/2)
-    #     top = 0
-    #     right = (width/2) + (height/2)
-    #     bottom = height
-    #     print("\n9.\n")
-
-    # print("\n10.\n")
-    # im1 = im.crop((left, top, right, bottom))
-    # im1.save(file_name)
-    # print("\n11.\n")
-    return 0
 
 def upload_simple_flyer(classname):
     generate_simple_flyer(classname)
@@ -899,3 +920,34 @@ def space(word, num=15):
     else:
         news += " "*toadd
     return news
+
+def get_current_teachers_names(shortname):
+    cnx, cursor = start()
+    
+    cursor.execute("Select id from classes where short_name = '%s'" % shortname)
+    class_id = cursor.fetchall()[0][0]
+    cursor.execute("select teacher_id from classes_to_teachers where class_id = '%s'" % class_id)
+    teacher_ids = cursor.fetchall()
+    
+    teacher_names = []
+    
+    for i, in teacher_ids:
+        cursor.execute("select name from teachers where id = '%s' and current = '1'" % i)
+        teacher_names.append(cursor.fetchall()[0][0])
+    
+    stop(cnx, cursor)
+    
+    return teacher_names
+
+def get_current_teacher_emails(shortname):
+    cnx, cursor = start()
+    teacher_names = get_current_teachers_names(shortname)
+    
+    names_emails = []
+    for i in teacher_names:
+        cursor.execute("select name, email from teachers where name = '%s'" % i);
+        names_emails.append(cursor.fetchall()[0])
+        
+    stop(cnx, cursor)
+    
+    return names_emails

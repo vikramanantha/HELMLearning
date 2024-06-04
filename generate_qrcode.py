@@ -7,6 +7,12 @@
 import pyqrcode
 import png
 
+website = "http://signup.helmlearning.com?geometry"
+stored = 'dumpsterfiles/homepage_qr.png'
 
-qr = pyqrcode.create("http://signup.helmlearning.com/class-signup.html?class=HTML")
-qr.png('dumpsterfiles/interest_qr.png', scale=6, quiet_zone=1)
+
+qr = pyqrcode.create(website)
+qr.png(stored, scale=7, quiet_zone=1)
+print("Created!")
+print("Website: %s" % website)
+print("Saved:   %s" % stored)
